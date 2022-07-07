@@ -545,8 +545,8 @@ def write_unglued(color_decomposition, prefix, image_number=0):
 
     '''
     logger.debug(f"color_decomposition={color_decomposition}")
-    logger.debug(f"prefix={prefix}")
-    logger.debug(f"image_number={image_number}")
+    logger.info(f"prefix={prefix}")
+    logger.info(f"image_number={image_number}")
     N_comps = color_decomposition[0].shape[2]
     #_color_image = [None]*N_comps
     #n_resolutions = len(color_decomposition)
