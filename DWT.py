@@ -1,4 +1,4 @@
-'''MRVC/DWT.py
+'''dyadic_DWT.py
 
 Provides:
 
@@ -27,6 +27,10 @@ import image_3
 #import L_DWT as L
 #import H_DWT as H
 #import debug
+import os
+import sys
+HOME = os.environ['HOME']
+sys.path.insert(1, HOME + "/repos/information_theory")
 import information
 
 #import logging
