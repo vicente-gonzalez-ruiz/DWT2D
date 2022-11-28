@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "DWT"
+version = "0.0.1"
+authors = [
+  { name="Vicente González Ruiz", email="vicente.gonzalez.ruiz@gmail.com" },
+]
+description = "2D-DWT (Discrete Wavelet Transform)"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/vicente-gonzalez-ruiz/DWT"
+"Bug Tracker" = "https://github.com/vicente-gonzalez-ruiz/DWT/issues"
