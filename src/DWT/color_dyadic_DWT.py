@@ -23,7 +23,8 @@ import numpy as np
 import pywt
 #import config
 #import distortion
-import image_3
+from image_IO import image_3
+#import image_3
 #import L_DWT as L
 #import H_DWT as H
 #import debug
