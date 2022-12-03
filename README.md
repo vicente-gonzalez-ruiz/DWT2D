@@ -1,2 +1,2 @@
 # DWT
-An implementation of the Digital Wavelet 2D Transform
+An implementation of the (dyadic) Discrete Wavelet Transform for 2D data.
