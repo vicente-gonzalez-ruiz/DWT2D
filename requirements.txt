@@ -1,1 +1,1 @@
-git+https://github.com/vicente-gonzalez-ruiz/information_theory@master#egg=information_theory
+git+https://github.com/vicente-gonzalez-ruiz/information_theory@main#egg=information_theory
