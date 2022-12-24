@@ -1,6 +1,6 @@
 [build-system]
 requires = ["hatchling", "setuptools", "setuptools-scm"]
-build-backend = "hatchling.build"
+build-backend = ["hatchling.build", "setuptools.build_meta"]
 
 [project]
 name = "DWT"
