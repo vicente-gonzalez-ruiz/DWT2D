@@ -1,2 +1,2 @@
-#git+https://github.com/vicente-gonzalez-ruiz/information_theory@main#egg=information_theory
 numpy
+git+https://github.com/vicente-gonzalez-ruiz/information_theory@main#egg=information_theory
