@@ -1,0 +1,91 @@
+\documentclass[tikz,14pt,border=10pt]{standalone}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{calc}
+
+\begin{document}
+% Definition of blocks:
+\tikzset{%
+  block/.style    = {draw, rectangle, minimum height = 2cm,
+    minimum width = 2cm, node distance = 3.5cm},
+  sum/.style      = {draw, circle, node distance = 3.5cm}, % Adder
+  input/.style    = {coordinate}, % Input
+  output/.style   = {coordinate} % Output
+}
+% Defining string as labels of certain blocks.
+\newcommand{\suma}{\Large$+$}
+\newcommand{\inte}{$\displaystyle \int$}
+\newcommand{\derv}{\huge$\frac{d}{dt}$}
+\newcommand{\DWT}[2]{\begin{tikzpicture}%
+    \draw node [draw, minimum width = 1cm, minimum height = 1cm] (0) {$#1$};
+    \draw node [draw, minimum width = 1cm, minimum height = 1cm, node distance = 1cm, right of=0, fill=gray!10] (empty) {};
+    \draw node [draw, minimum width = 1cm, minimum height = 1cm, node distance = 1cm, below of=0, fill=gray!10] {};
+    \draw node [draw, minimum width = 1cm, minimum height = 1cm, node distance = 1cm, below of=empty, fill=gray!10] {$#2$};
+    %\draw grid[very thick] (2,2);
+    %\draw node (L) at (0.5,1.5) {$0$};
+    %\draw node (H) at (1.5,0.5) {$#1^\sim.H$};
+  \end{tikzpicture}
+}
+\tikzstyle{line} = [draw, -latex']
+\begin{tikzpicture}[auto, >=triangle 45]
+
+  \draw node [block] (AL) {$[A.L]$};
+  \draw node [node distance=3.5cm, right of=AL, label=$A$] (DWTA) {\DWT{A.L}{A.H}};
+  \draw node [block, right of=DWTA] (BL) {$[B.L]$};
+  \draw node [node distance=3.5cm, right of=BL, label=$B$] (DWTB) {\DWT{B.L}{\tilde{B}.H}};
+  \draw node [block, right of=DWTB] (CL) {$[C.L]$};
+  \draw node [node distance=3.5cm, right of=CL, label=$C$] (DWTC) {\DWT{C.L}{C.H}};
+  \draw node [block, below of=DWTA] (AH) {$[A.H]$};
+  \draw node [block, below of=DWTB] (BHp) {$[\tilde{B}.H]$};
+  \draw node [block, below of=DWTC] (CH) {$[C.H]$};
+  \draw node [block, below of=AH] (BHA) {$[B_A.H]$};
+  \draw node [sum, below of=BHp] (suma1) {\suma};
+  \draw node [block, below of=CH] (BHC) {$[B_C.H]$};
+  \draw node [draw, thick, rectangle, right of=BHA, node distance=3.5cm] (12a) {$1/2$};
+  \draw node [draw, thick, rectangle, left of=BHC, node distance=3.5cm] (12b) {$1/2$};
+  \draw node [block, below of=suma1] (BH) {$[B.H]$};
+  \draw node [sum, left of=BH] (suma2) {\suma};
+  \draw node [block, below of=suma2] (B) {$b$};
+  \draw node [sum, left of=AH] (suma3) {\suma};
+  \draw node [sum, left of=CH] (suma4) {\suma};
+  \draw node [rectangle, minimum width = 2cm, minimum height = 2cm, node distance = 3.5cm, left of=B] (lB) {};
+  \draw node [block, left of=lB] (a) {$a$};
+  \draw node [rectangle, minimum width = 2cm, minimum height = 2cm, node distance = 3.5cm, right of=B] (rB) {};
+  \draw node [block, right of=rB] (c) {$c$};
+
+  \draw [->] ($(DWTA) + (-1cm,0.5cm)$) -- node[below] {iDWT} (AL);
+  \draw [->] ($(DWTB) + (-1cm,0.5cm)$) -- node[below] {iDWT} (BL);
+  \draw [->] ($(DWTC) + (-1cm,0.5cm)$) -- node[below] {iDWT} (CL);
+  \draw [->] ($(DWTA) + (0.5cm,-1cm)$) -- node[left] {iDWT} (AH);
+  \draw [->] ($(DWTB) + (0.5cm,-1cm)$) -- node {iDWT} (BHp);
+  \draw [->] ($(DWTC) + (0.5cm,-1cm)$) -- node {iDWT} (CH);
+  \draw [->] (AH) -- node {$[B.L]\rightarrow [A.L]$} (BHA);
+  \draw [->] (BHp) -- (suma1);
+  \draw [->] (CH) -- node {$[B.L]\rightarrow [C.L]$} (BHC);
+  \draw [->] (BHA) -- (12a);
+  \draw [->] (BHC) -- (12b);
+  \draw [->] (12a) -- (suma1);
+  \draw [->] (12b) -- (suma1);
+  \draw [->] (suma1) -- (BH);
+  \draw [->] (BH) -- (suma2);
+  \draw [->] (suma2) -- (B);
+  \draw [->] (AH) -- (suma3);
+  \draw [->] (CH) -- (suma4);
+  \draw [->] (AL) -- (suma3);
+  \draw [->] (CL) -- (suma4);
+  \draw [->] (suma3) -- (a);
+  \draw [->] (suma4)
+  -- ($(12b.north) + (0, 0.5cm)$)
+  -- ($(12b.north) + (-1cm,0.5cm)$)
+  -- ($(12b.north) + (-1cm,-1.2cm)$)
+  -- ($(12b.north) + (0,-1.2cm)$)
+  -- (c);
+  \draw [->] (BL)
+  -- ($(12a.north) + (0, 0.5cm)$)
+  -- ($(12a.north) + (-1cm,0.5cm)$)
+  -- ($(12a.north) + (-1cm,-1.2cm)$)
+  -- ($(12a.north) + (0,-1.2cm)$)
+  -- (suma2); 
+\end{tikzpicture}
+\end{document}

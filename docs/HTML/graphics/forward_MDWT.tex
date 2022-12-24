@@ -1,0 +1,54 @@
+\documentclass[tikz,14pt,border=10pt]{standalone}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{calc}
+
+\begin{document}
+% Definition of blocks:
+\tikzset{%
+  block/.style    = {draw, rectangle, minimum height = 3cm,
+    minimum width = 3cm, node distance = 4cm},
+  sum/.style      = {draw, circle, node distance = 3.5cm}, % Adder
+  input/.style    = {coordinate}, % Input
+  output/.style   = {coordinate} % Output
+}
+% Defining string as labels of certain blocks.
+\newcommand{\suma}{\Large$+$}
+\newcommand{\inte}{$\displaystyle \int$}
+\newcommand{\derv}{\huge$\frac{d}{dt}$}
+\newcommand{\DWT}[2]{\begin{tikzpicture}%
+    \draw node [draw, minimum width = 1.5cm, minimum height = 1.5cm] (0) {$#1$};
+    \draw node [draw, minimum width = 1.5cm, minimum height = 1.5cm, node distance =
+1.5cm, right of=0, fill=gray!10] (empty) {};
+    \draw node [draw, minimum width = 1.5cm, minimum height = 1.5cm, node distance =
+1.5cm, below of=0, fill=gray!10] {};
+    \draw node [draw, minimum width = 1.5cm, minimum height = 1.5cm, node distance =
+1.5cm, below of=empty, fill=gray!10] {$#2$};
+    %\draw grid[very thick] (2,2);
+    %\draw node (L) at (0.5,1.5) {$0$};
+    %\draw node (H) at (1.5,0.5) {$#1^\sim.H$};
+  \end{tikzpicture}
+}
+\tikzstyle{line} = [draw, -latex']
+\begin{tikzpicture}[auto, >=triangle 45]
+
+  \draw
+  node [block] (V0) {$V_0$}
+  node [block, right of=V0] (V1) {$V_1$}
+  node [right of=V1, node distance=1.8cm] (cdots) {$\cdots$}
+  node [block, right of=V1] (VN) {$V_{N-1}$}
+  node [below of=V0, node distance=3.8cm] (DWT1) {\DWT{\scriptstyle V_0.L}{\scriptstyle V_0.H}}
+  node [below of=V1, node distance=3.8cm] (DWT2) {\DWT{\scriptstyle V_1.L}{\scriptstyle V_1.H}}
+  node [below of=VN, node distance=3.8cm] (DWTN) {\DWT{\scriptstyle V_{N-1}.L}{\scriptstyle V_{N-1}.H}}
+  % node [below of=DWT1, node distance=1.4cm] (S0) {$S_1$}
+  % node [below of=DWT2, node distance=1.4cm] (S0) {$S_2$}
+  % node [below of=DWTN, node distance=1.4cm] (SN) {$S_N$}
+  ;
+
+  \draw [->] (V0) -- (DWT1);
+  \draw [->] (V1) -- (DWT2);
+  \draw [->] (VN) -- (DWTN);
+
+\end{tikzpicture}
+\end{document}
