@@ -255,7 +255,7 @@ def copy(decomposition):
     return new_decomp
 
 def _write(x, fn):
-    io.imsave(fn, x, check_contrast=False)
+    io.imsave(fn + ".png", x, check_contrast=False)
     output_length = os.path.getsize(fn)
     return output_length
 
@@ -286,7 +286,7 @@ image, in glued format.
     return output_length, slices
 
 def _read(fn):
-    return io.imread(fn)
+    return io.imread(fn + ".png")
 
 def read_glued(slices, fn):
     '''Read a color decomposition from a (single) disk file.
