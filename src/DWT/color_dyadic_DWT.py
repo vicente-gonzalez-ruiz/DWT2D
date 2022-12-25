@@ -280,7 +280,6 @@ image, in glued format.
     '''
     logger.debug(f"color_decomposition={color_decomposition}")
     logger.debug(f"fn={fn}")
-    logger.debug(f"image_number={image_number}")
     glued_color_decomposition, slices = glue_color_decomposition(color_decomposition)
     #output_length = image_3.write(glued_color_decomposition, fn)
     output_length = _write(glued_color_decomposition, fn)
@@ -306,13 +305,12 @@ def read_glued(slices, fn):
     '''
     logger.debug(f"slices={slices}")
     logger.debug(f"fn={fn}")
-    logger.debug(f"image_number={image_number}")
     #glued_color_decomposition = image_3.read(fn, image_number)
     glued_color_decomposition = read(fn)
     color_decomposition = unglue_color_decomposition(glued_color_decomposition, slices)
     return color_decomposition
 
-def write_unglued(color_decomposition, fn, image_number=0):
+def write_unglued(color_decomposition, fn):
     '''Write a color decomposition in several disk files (one per color subband).
 
     Parameters
@@ -332,7 +330,6 @@ def write_unglued(color_decomposition, fn, image_number=0):
     '''
     logger.debug(f"color_decomposition={color_decomposition}")
     logger.info(f"fn={fn}")
-    logger.info(f"image_number={image_number}")
     N_comps = color_decomposition[0].shape[2]
     #_color_image = [None]*N_comps
     #n_resolutions = len(color_decomposition)
@@ -357,7 +354,7 @@ def write_unglued(color_decomposition, fn, image_number=0):
     slices = pywt.coeffs_to_array(aux_decom)[1]
     return output_length, slices
 
-def read_unglued(slices, fn, image_number=0):
+def read_unglued(slices, fn):
     '''Read a color decomposition from the disk (one file per color subband).
 
     Parameters
@@ -366,12 +363,11 @@ def read_unglued(slices, fn, image_number=0):
         The structure of the decomposition of each component.
     fn : a Python-string.
         The filename of the input files.
-    image_number : a signed integer.
-        The image number in a possible sequence of images (frames).
 
     '''
     N_levels = len(slices) - 1
-    LL = image_3.read(f"{fn}LL{N_levels}", image_number)
+    #LL = image_3.read(f"{fn}LL{N_levels}", image_number)
+    LL = _read(f"{fn}LL{N_levels}")
     color_decomposition = [LL]
     resolution_I = N_levels
     for l in range(N_levels, 0, -1):
