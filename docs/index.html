@@ -1,0 +1,481 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head> <title>Energy Concentration and Spatial Multiresolution with the Discrete Wavelet
+Transform</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='index.css' rel='stylesheet' type='text/css' /> 
+<meta content='index.tex' name='src' /> 
+<script>window.MathJax = { tex: { tags: "ams", }, }; </script> 
+ <script async='async' id='MathJax-script' src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js' type='text/javascript'></script>  
+</head><body>
+   <div class='maketitle'>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+
+<h2 class='titleHead'>Energy Concentration and Spatial
+Multiresolution with the Discrete Wavelet
+Transform</h2>
+ <div class='author'><a href='https://cms.ual.es/UAL/personas/persona.htm?id=515256515553484875'><span class='ecrm-1200'>Vicente González Ruiz</span></a> <span class='ecrm-1200'>- </span><a href='https://cms.ual.es/UAL/universidad/departamentos/informatica/index.htm'><span class='ecrm-1200'>Depto Informática</span></a> <span class='ecrm-1200'>- </span><a href='https://www.ual.es'><span class='ecrm-1200'>UAL</span></a></div><br />
+<div class='date'><span class='ecrm-1200'>December 25, 2022</span></div>
+   </div>
+   <h3 class='likesectionHead' id='contents'><a id='x1-1000'></a>Contents</h3>
+   <div class='tableofcontents'>
+    <span class='sectionToc'>1 <a href='#the-transform' id='QQ2-1-2'>The transform</a></span>
+<br />     <span class='subsectionToc'>1.1 <a href='#d-case' id='QQ2-1-3'>1D case</a></span>
+<br />      <span class='subsubsectionToc'>1.1.1 <a href='#an-example-of-dwt-the-haar-dwt' id='QQ2-1-4'>An example of DWT: the Haar DWT</a></span>
+<br />      <span class='subsubsectionToc'>1.1.2 <a href='#-httpsenwikipediaorgwikimultiresolutionanalysismultiresolution-analysis' id='QQ2-1-11'>Multiresolution analysis</a></span>
+<br />      <span class='subsubsectionToc'>1.1.3 <a href='#filters' id='QQ2-1-12'>Filters</a></span>
+<br />     <span class='subsectionToc'>1.2 <a href='#d-case1' id='QQ2-1-14'>2D case</a></span>
+<br />     <span class='subsectionToc'>1.3 <a href='#multiresolution' id='QQ2-1-21'>Multiresolution</a></span>
+<br />      <span class='subsubsectionToc'>1.3.1 <a href='#multiresolution1' id='QQ2-1-22'>Multiresolution</a></span>
+<br />      <span class='subsubsectionToc'>1.3.2 <a href='#multiresolution2' id='QQ2-1-23'>Multiresolution</a></span>
+<br />     <span class='subsectionToc'>1.4 <a href='#quantization' id='QQ2-1-24'>Quantization</a></span>
+<br />      <span class='subsubsectionToc'>1.4.1 <a href='#quantization1' id='QQ2-1-25'>Quantization</a></span>
+<br />      <span class='subsubsectionToc'>1.4.2 <a href='#quantization2' id='QQ2-1-26'>Quantization</a></span>
+<br />    <span class='sectionToc'>2 <a href='#references' id='QQ2-1-27'>References</a></span>
+   </div>
+<!-- l. 8 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='the-transform'><span class='titlemark'>1   </span> <a id='x1-20001'></a>The transform</h3>
+                                                                  
+
+                                                                  
+<!-- l. 10 --><p class='noindent'>Technically, the <a href='https://en.wikipedia.org/wiki/Discrete_wavelet_transform'>DWT (Discrete Wavelet Transform)</a> is a <a href='https://en.wikipedia.org/wiki/Linearity'>linear</a> <a href='https://en.wikipedia.org/wiki/Change_of_basis'>basis</a> <a href='https://www.youtube.com/watch?v=P2LTAUO1TdA'>expansion</a> which
+computes a <a href='https://www.dsprelated.com/freebooks/sasp/Critically_Sampled_Perfect_Reconstruction.html'>critically</a>-<a href='https://en.wikipedia.org/wiki/Nyquist-Shannon_sampling_theorem'>sampled</a> <a href='https://en.wikipedia.org/wiki/Octave_(electronics)'>octave</a>-<a href='https://en.wikipedia.org/wiki/Frequency_band'>band</a> <a href='https://www.sciencedirect.com/topics/engineering/wavelet-decomposition'>decomposition</a> <span class='cite'>[<a href='#Xvetterli2014foundations'>4</a>, <a href='#Xkovacevic2013fourier'>1</a>]</span>. As the rest of
+transforms:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-2002x1'>The output of the DWT describes the (input) signal in a set of <a href='https://en.wikipedia.org/wiki/Sub-band_coding'>subbands</a>,
+     producing the so called a <a href='https://en.wikipedia.org/wiki/Discrete_wavelet_transform'>decomposition</a>.
+     </li>
+<li class='enumerate' id='x1-2004x2'>The <a href='https://en.wikipedia.org/wiki/Array_data_structure#Element_identifier_and_addressing_formulas'>index</a> of the subband is related to the <a href='https://en.wikipedia.org/wiki/Frequency'>frequency</a> of the signal. For
+     example, in the case of the <a href='https://en.wikipedia.org/wiki/Digital_image'>images</a>, the position of the <a href='https://en.wikipedia.org/wiki/Coefficient'>coefficients</a> in the
+     subbands is related to <a href='https://en.wikipedia.org/wiki/Discrete_wavelet_transform#/media/File:Jpeg2000_2-level_wavelet_transform-lichtenstein.png'>the spatial area where the corresponding pixels are
+     found</a>.</li></ol>
+<!-- l. 38 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='d-case'><span class='titlemark'>1.1   </span> <a id='x1-30001.1'></a>1D case</h4>
+<!-- l. 40 --><p class='noindent'>The 1D-DWT convolves the input signal with a set of basis functions (you can see
+the basis functions of several DWTs in the <a href='http://wavelets.pybytes.com/'>Wavelet Browser</a>) defined by a <a href='https://tecnologias-multimedia.github.io/milestones/12-temporal_coding/'>cascade
+of filters banks</a>, building a dyadic signal decomposition in the frequency
+domain.
+</p><!-- l. 47 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='an-example-of-dwt-the-haar-dwt'><span class='titlemark'>1.1.1   </span> <a id='x1-40001.1.1'></a>An example of DWT: the Haar DWT</h5>
+<!-- l. 48 --><p class='noindent'>The DWT is also described by the filters of the analysis matrix transform (the matrix
+\(\mathbf K\) in previous milestones). Haar defined the analysis <a href='https://en.wikipedia.org/wiki/Downsampling_(signal_processing)'>downsampling</a> filters
+\begin {equation}  \begin {bmatrix} {\mathbf l}^{s+1}_n \\ {\mathbf h}^{s+1}_n \end {bmatrix} = \begin {bmatrix} \frac {1}{\sqrt {2}} &amp; \frac {1}{\sqrt {2}} \\ \frac {1}{\sqrt {2}} &amp; \frac {-1}{\sqrt {2}} \end {bmatrix} \begin {bmatrix} {\mathbf l}^s_{2n} \\ {\mathbf l}^s_{2n+1} \end {bmatrix}, \label {eq:Haar_transform}  \end {equation}
+where the superindex \(s\) denotes the subband, and \(n\) refers to the \(n\)-th element of the
+signal. By definition (and notice that this holds for all DWTs), \begin {equation}  {\mathbf l}^0={\mathbf x}.  \end {equation}
+</p>
+   <figure class='figure'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!-- l. 75 --><p class='noindent' id='-haar-filterss-response-in-the-frequency-domain-see-this-httpsgithubcomsistemasmultimediasistemasmultimediagithubioblobmastermilestonesdwtdwtfiltersanalysisipynbnotebook-kiej-denotes-the-httpsenwikipediaorgwikiabsolutevaluemodulus-of-the-httpsenwikipediaorgwikifouriertransformfourier-transform-of-ki-'><div style='text-align:center;'> <img src='graphics/haar_modulus.svg' /> </div>  <a id='x1-4001r1'></a>
+<a id='x1-4002'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Haar filters’s response in the frequency domain (see this <a href='https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/DWT_filters_analysis.ipynb'>notebook</a>). \(|{\mathbf K}_i(e^{j\omega })|\)
+denotes the <a href='https://en.wikipedia.org/wiki/Absolute_value'>modulus</a> of the <a href='https://en.wikipedia.org/wiki/Fourier_transform'>Fourier transform</a> of \({\mathbf K}_i\).                        </span></figcaption><!-- tex4ht:label?: x1-4001r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <figure class='figure'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!-- l. 87 --><p class='noindent' id='-daubechies-filterss-response-in-the-frequency-domain-see-this-httpsgithubcomsistemasmultimediasistemasmultimediagithubioblobmastermilestonesdwtdwtfiltersanalysisipynbnotebook-'><div style='text-align:center;'> <img src='graphics/db5_modulus.svg' /> </div>  <a id='x1-4003r2'></a>
+<a id='x1-4004'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 2:  </span><span class='content'>Daubechies-5  filters’s  response  in  the  frequency  domain  (see  this
+<a href='https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/DWT_filters_analysis.ipynb'>notebook</a>).                                                         </span></figcaption><!-- tex4ht:label?: x1-4003r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <figure class='figure'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!-- l. 96 --><p class='noindent' id='-biorthiogonal-filterss-response-in-the-frequency-domain-see-this-httpsgithubcomsistemasmultimediasistemasmultimediagithubioblobmastermilestonesdwtdwtfiltersanalysisipynbnotebook-'><div style='text-align:center;'> <img src='graphics/bior3.5_modulus.svg' /> </div>  <a id='x1-4005r3'></a>
+<a id='x1-4006'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 3: </span><span class='content'>Biorthiogonal-3.5 filters’s response in the frequency domain (see this
+<a href='https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/DWT_filters_analysis.ipynb'>notebook</a>).                                                         </span></figcaption><!-- tex4ht:label?: x1-4005r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <figure class='figure'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!-- l. 105 --><p class='noindent' id='-phase-response-of-the-haar-filters-see-this-httpsgithubcomsistemasmultimediasistemasmultimediagithubioblobmastermilestonesdwtdwtfiltersanalysisipynbnotebook-'><div style='text-align:center;'> <img src='graphics/haar_phase.svg' /> </div>  <a id='x1-4007r4'></a>
+<a id='x1-4008'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 4: </span><span class='content'>Phase response of the Haar filters (see this <a href='https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/DWTfilters_analysis.ipynb'>notebook</a>).            </span></figcaption><!-- tex4ht:label?: x1-4007r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <figure class='figure'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!-- l. 113 --><p class='noindent' id='-phase-response-of-the-daubechies-filters-see-this-httpsgithubcomsistemasmultimediasistemasmultimediagithubioblobmastermilestonesdwtdwtfiltersanalysisipynbnotebook-notice-that-we-obtained-phase-responses-are-not-completely-linear-it-is-not-a-straight-line-'><div style='text-align:center;'> <img src='graphics/db5_phase.svg' /> </div>  <a id='x1-4009r5'></a>
+<a id='x1-4010'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 5: </span><span class='content'>Phase response of the Daubechies-5 filters (see this <a href='https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/DWT_filters_analysis.ipynb'>notebook</a>). Notice
+that we obtained phase responses are not completely linear (it is not a straight
+line).                                                             </span></figcaption><!-- tex4ht:label?: x1-4009r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 121 --><p class='indent'>   As it can be seen in the Fig. <a href='#x1-4001r1'>1<!-- tex4ht:ref: fig:Haar_modulus  --></a>, \({\mathbf K}_0\) is a <a href='https://en.wikipedia.org/wiki/Low-pass_filter'>low-pass filter</a> and \({\mathbf K}_1\) is a <a href='https://en.wikipedia.org/wiki/High-pass_filter'>high-pass
+filter</a> (this holds for all DWTs). Considering the Haar filter, we can conclude
+that:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-4012x1'>
+     <!-- l. 128 --><p class='noindent'>There exists <a href='https://en.wikipedia.org/wiki/Aliasing'>aliasing</a> between the filters (this is also true for all DWTs) and this
+     is a drawback because:
+         </p><ol class='enumerate2'>
+<li class='enumerate' id='x1-4014x1'>The  same  <a href='https://en.wikipedia.org/wiki/Information'>information</a>  can  be  found  in  both  subbands  (\(\mathbf l\)  and  \(\mathbf h\)).
+         Therefore, the concentration of the energy in one of the subbands is
+         smaller.
+         </li>
+<li class='enumerate' id='x1-4016x2'>At it can be seen also in Eq. <span class='ecbx-1000'>??</span>, the subbands are downsampled by
+         2 (action usually represented by \(\downarrow 2\)) and both subbands should have, at
+         most, a <a href='https://en.wikipedia.org/wiki/Bandwidth_(signal_processing)'>bandwidth</a> of \(\frac {1}{2}\) <a href='https://en.wikipedia.org/wiki/Radian'>radians</a>/<a href='https://en.wikipedia.org/wiki/Sampling_(signal_processing)'>sample</a> in order to avoid the aliasing
+         during the <a href='https://en.wikipedia.org/wiki/Downsampling_(signal_processing)'>subsampling</a>, thus increasing the <a href='https://en.wikipedia.org/wiki/Perception'>perceptible</a> <a href='https://en.wikipedia.org/wiki/Signal-to-noise_ratio'>quality</a> of the
+         low-pass subband \(\mathbf l\).</li></ol>
+     <!-- l. 147 --><p class='noindent'>These problems can be only solved using filters that have <a href='https://en.wikipedia.org/wiki/Transfer_function'>transfer functions</a> that overlaps a
+     smaller area<span class='footnote-mark'><a href='#fn1x0' id='fn1x0-bk'><sup class='textsuperscript'>1</sup></a></span><a id='x1-4017f1'></a>
+     (see Figs. <a href='#x1-4003r2'>2<!-- tex4ht:ref: fig:db5_modulus  --></a> and <a href='#x1-4005r3'>3<!-- tex4ht:ref: fig:bior3.5_modulus  --></a>).
+     </p></li>
+<li class='enumerate' id='x1-4019x2'>There is not <a href='https://en.wikipedia.org/wiki/Linear_phase'>phase distortion</a> (the phase of the filters is a linear function of the
+     frequency, see the Fig. <a href='#x1-4007r4'>4<!-- tex4ht:ref: fig:haar_phase  --></a>). This means that both coefficients \({\mathbf l}^{s+1}_n\) and \({\mathbf h}^{s+1}_n\) refers to the
+     same section of signal \(\{{\mathbf l}^s_{2n}, {\mathbf l}^s_{2n+1}\}\), allowing the design of entropy codecs for the
+     decomposition which exploit the correlation between subbands. Notice that this
+     does not hold for all filters (see Fig. <a href='#x1-4009r5'>5<!-- tex4ht:ref: fig:db5_phase  --></a>).</li></ol>
+   <figure class='figure'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!-- l. 170 --><p class='noindent' id='-computation-of-the-slevels-dwt-and-the-generated-subbands-'><div style='text-align:center;'> <img src='graphics/DWT.svg' /> </div>  <a id='x1-4020r6'></a>
+<a id='x1-4021'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 6: </span><span class='content'>Computation of the \(S\)-levels DWT and the generated subbands.     </span></figcaption><!-- tex4ht:label?: x1-4020r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 176 --><p class='indent'>   Eq. <span class='ecbx-1000'>??</span> computes the 1-levels Haar DWT. A more general expresion for this
+equation (and this holds for all DWTs) is \begin {equation}  {\mathbf l}^{s+1} | {\mathbf h}^{s+1} = \text {DWT}({\mathbf l}^s), \label {eq:DWT}  \end {equation}
+where \(\cdot |\cdot \) denotes the concatenation of subbands. As can be seen in the Fig. <a href='#x1-4020r6'>6<!-- tex4ht:ref: fig:DWT  --></a>, it’s
+possible to compute the \(S\)-levels DWT, using Eq. <span class='ecbx-1000'>??</span> iteratively over the low-frequency
+subband, generating the decomposition \begin {equation}  {\mathbf l}^S_0 | {\mathbf h}^S_0 | {\mathbf h}^{S-1}_0 {\mathbf h}^{S-1}_1 | {\mathbf h}^{S-2}_0 {\mathbf h}^{S-2}_1 {\mathbf h}^{S-2}_2 {\mathbf h}^{S-2}_3 | \cdots | {\mathbf h}^1_0 h^1_1 \cdots {\mathbf h}^1_{2^{n-1}-1}=\text {DWT}^S({\mathbf l}^0), \label {eq:S_levels_DWT}  \end {equation}
+where \begin {equation}  n = \log _2(N)  \end {equation}
+where \(N\) is the number of samples.
+</p><!-- l. 199 --><p class='indent'>   In the case of the Haar filters, the synthesis (inverse) \(1\)-levels DWT (that we will
+denote by \(\text {DWT}^{-1}\)) is the result of solving the coefficients \({\mathbf l}^{s+1}_n\) and \({\mathbf h}^{s+1}_n\) in the Eq. <span class='ecbx-1000'>??</span>. In general, for
+longer DWT filters we are going to have more coefficients, but the same procedure
+can be used for finding the synthesis transform. Therefore, it can be written that
+\begin {equation}  {\mathbf l}^s = \text {DWT}^{-1}({\mathbf l}^{s+1} | {\mathbf h}^{s+1}),  \end {equation}
+and \(\text {DWT}^{-S}\), the \(S\)-levels synthesis DWT, can be computed as it is also described in the
+Fig. <a href='#x1-4020r6'>6<!-- tex4ht:ref: fig:DWT  --></a>, by simply reversing the analysis steps.
+</p>
+   <h5 class='subsubsectionHead' id='-httpsenwikipediaorgwikimultiresolutionanalysismultiresolution-analysis'><span class='titlemark'>1.1.2   </span> <a id='x1-50001.1.2'></a><a href='https://en.wikipedia.org/wiki/Multiresolution_analysis'>Multiresolution analysis</a></h5>
+<!-- l. 213 --><p class='noindent'>In the decomposition described in Eq. <span class='ecbx-1000'>??</span> there are \(S+1\) subbands, and therefore, it is
+possible to compute \(S+1\) resolution levels of the analyzed signal \({\mathbf l}^0\): </p>
+     <ul class='itemize1'>
+     <li class='itemize'>\({\mathbf l}^S\): the resolution level \(S\) of \({\mathbf l}^0\) (no \(\text {DWT}^{-1}\) has been applied in the synthesis process),
+     with have only one sample \({\mathbf l}^S_0\) that uses to be the <a href='https://en.wikipedia.org/wiki/Arithmetic_mean'>arithmetic mean</a> of \({\mathbf l}^0\).
+     The coefficient \({\mathbf l}^S_0\) is also called the <a href='https://en.wikipedia.org/wiki/DC_bias'>DC (Direct Current) coefficient</a>. On the
+     contrary, the rest of coefficents (high-frequency subbands) are called the
+     AC (Alternating Current) coefficients.
+     </li>
+     <li class='itemize'>\({\mathbf l}^{S-1}=\text {DWT}^{-1}({\mathbf l}^S | {\mathbf h}^S)\), the resolution level \(S-1\) of \({\mathbf l}^0\), with two samples.
+     </li>
+     <li class='itemize'>\({\mathbf l}^{S-2}=\text {DWT}^{-1}({\mathbf l}^{S-1} | {\mathbf h}^{S-1})\), the resolution level \(S-1\) of \({\mathbf l}^0\), with four samples.
+     </li>
+     <li class='itemize'>\(\vdots \)
+     </li>
+     <li class='itemize'>The resolution level \(0\), \({\mathbf l}^0=\text {DWT}^{-1}({\mathbf l}^1 | {\mathbf h}^1)\).</li></ul>
+                                                                  
+
+                                                                  
+<!-- l. 236 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='filters'><span class='titlemark'>1.1.3   </span> <a id='x1-60001.1.3'></a>Filters</h5>
+   <figure class='figure'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!-- l. 240 --><p class='noindent' id='-a-channels-prfb-perfect-reconstruction-filter-bank-see-this-httpsgithubcomsistemasmultimediasistemasmultimediagithubioblobmastermilestonesdwtprfbipynbnotebook-'><div style='text-align:center;'> <img src='graphics/PRFB.svg' /> </div>  <a id='x1-6001r7'></a>
+<a id='x1-6002'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 7: </span><span class='content'>A 2-channels PRFB (Perfect Reconstruction Filter Bank). See this
+<a href='https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/PRFB.ipynb'>notebook</a>.                                                          </span></figcaption><!-- tex4ht:label?: x1-6001r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 247 --><p class='indent'>   All DWTs are defined by 4 filters (using a similar notation that the followed by
+<a href='https://pywavelets.readthedocs.io'>PyWavelets</a>) (see Fig. <a href='#x1-6001r7'>7<!-- tex4ht:ref: fig:PRFB  --></a>):
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-6004x1'>Analysis  (downsampling)  low-pass  filter  \(\tilde \phi \)  (the  decomposition  scaling
+     function), which computes \({\mathbf l}^{s+1}\) from \({\mathbf l}^s\).
+     </li>
+<li class='enumerate' id='x1-6006x2'>Analysis  (downsampling)  high-pass  filter  \(\tilde \psi \)  (the  decomposition  wavelet
+     function), which computes \({\mathbf h}^{s+1}\) from \({\mathbf l}^s\).
+     </li>
+<li class='enumerate' id='x1-6008x3'>Synthesis  (upsampling)  high-pass  filter  \(\phi \)  (the  reconstruction  scaling
+     function), which computes \(\{{\mathbf l}^s_{2n}\}\) from \({\mathbf l}^{s+1}\) and \({\mathbf h}^{s+1}\).
+     </li>
+<li class='enumerate' id='x1-6010x4'>Synthesis  (upsampling)  high-pass  filter  \(\psi \)  (the  reconstruction  wavelet
+     function), which computes \(\{{\mathbf l}^s_{2n+1}\}\) from \({\mathbf l}^{s+1}\) and \({\mathbf h}^{s+1}\).</li></ol>
+<!-- l. 265 --><p class='indent'>   In the context of the DWT, orthogonality provides intersubband <a href='https://en.wikipedia.org/wiki/Decorrelation'>decorrelation</a>,
+which basically means that the contribution of each subbands to the reconstruction
+(and this holds for all DWTs) of the signal are independent. Orthogonal filters can be
+recognized because:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-6012x1'>\(\tilde \phi \bot \tilde \psi \) and \(\phi \bot \psi \), where \(\bot \) denotes orthogonality.
+     </li>
+<li class='enumerate' id='x1-6014x2'>Their taps are all different (the filters are asymmetric).
+     </li>
+<li class='enumerate' id='x1-6016x3'>The taps of the synthesis filters can be determined simply by “reflecting”
+     the taps of the analysis filters.
+                                                                  
+
+                                                                  
+     </li>
+<li class='enumerate' id='x1-6018x4'>In general, except for the Haar DWT, orthogonal filters generate phase
+     distortion.</li></ol>
+<!-- l. 280 --><p class='indent'>   On the other hand, in a biorthogonal DWT:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-6020x1'>\(\tilde \phi \bot \tilde \psi \), \(\phi \bot \psi \), \(\psi \bot \tilde \phi \) and \(\tilde \psi \bot \phi \).
+     </li>
+<li class='enumerate' id='x1-6022x2'>All the filters are symmetric.
+     </li>
+<li class='enumerate' id='x1-6024x3'>The filters satisfy that \begin {equation}  \psi =(-1)^n\tilde \phi ;~n\in \mathbb {N},  \end {equation}
+     and \begin {equation}  \phi =(-1)^n\tilde \psi ;~n\in \mathbb {N}  \end {equation}
+     (the odd taps are multiplied by \(-1\)). Therefore, if we have the analysis filters we
+     can deduce the synthesis filters and viceversa.
+     </li>
+<li class='enumerate' id='x1-6026x4'>No phase distortion is generated.
+     </li>
+<li class='enumerate' id='x1-6028x5'>In orthogonal DWTs, all the subbands have the same gain, but this is not true
+     for biorthogonal DWTs.</li></ol>
+   <h4 class='subsectionHead' id='d-case1'><span class='titlemark'>1.2   </span> <a id='x1-70001.2'></a>2D case</h4>
+<!-- l. 302 --><p class='noindent'>(Digital) Images are 2D (2-Dimensional, <a href='https://en.wikipedia.org/wiki/Discrete_time_and_continuous_time'>discrete</a> in <a href='https://en.wikipedia.org/wiki/Space'>space</a> and <a href='https://en.wikipedia.org/wiki/Amplitude'>amplitude</a>) signals.
+The 2D-DWT of an image can be computed using (1) <a href='https://en.wikipedia.org/wiki/Separable_filter'>separable</a> 1D filters, and
+(2) <a href='https://en.wikipedia.org/wiki/Non-separable_wavelet'>nonseparable</a> 2D filters  <span class='cite'>[<a href='#Xsayood2017introduction'>3</a>]</span>. Except in very special cases, all 2D-DWT
+implementations use separable filters by simplicity. The Figure <a href='#x1-7001r8'>8<!-- tex4ht:ref: fig:2D-DWT_basis  --></a> show an example of
+basis functions used by a \(3\)-levels 2D-DWT.
+</p>
+   <figure class='figure' id='-ddwt-basis-functions-see-this-httpsgithubcomsistemasmultimediasistemasmultimediagithubioblobmastermilestonesdwtdwtbasisipynbnotebook-'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<div class='tabular'> <table class='tabular' id='TBL-2'><colgroup id='TBL-2-1g'><col id='TBL-2-1' /><col id='TBL-2-2' /><col id='TBL-2-3' /><col id='TBL-2-4' /></colgroup><tr id='TBL-2-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-2-1-1' style='white-space:nowrap; text-align:center;'> <div style='text-align:center;'> <img src='LL3.png' /> </div>   </td><td class='td11' id='TBL-2-1-2' style='white-space:nowrap; text-align:center;'> <div style='text-align:center;'> <img src='LH3.png' /> </div>   </td><td class='td11' id='TBL-2-1-3' style='white-space:nowrap; text-align:center;'> <div style='text-align:center;'> <img src='LH2.png' /> </div>   </td><td class='td11' id='TBL-2-1-4' style='white-space:nowrap; text-align:center;'> <div style='text-align:center;'> <img src='HH1.png' /> </div>   </td></tr><tr id='TBL-2-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-2-2-1' style='white-space:nowrap; text-align:center;'> <div style='text-align:center;'> <img src='HL3.png' /> </div>  </td><td class='td11' id='TBL-2-2-2' style='white-space:nowrap; text-align:center;'> <div style='text-align:center;'> <img src='HH3.png' /> </div>  </td><td class='td11' id='TBL-2-2-3' style='white-space:nowrap; text-align:center;'> </td><td class='td11' id='TBL-2-2-4' style='white-space:nowrap; text-align:center;'></td>
+</tr><tr id='TBL-2-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-2-3-1' style='white-space:nowrap; text-align:center;'> <div style='text-align:center;'> <img src='HL2.png' /> </div>   </td><td class='td11' id='TBL-2-3-2' style='white-space:nowrap; text-align:center;'>   </td><td class='td11' id='TBL-2-3-3' style='white-space:nowrap; text-align:center;'> <div style='text-align:center;'> <img src='HH2.png' /> </div>   </td><td class='td11' id='TBL-2-3-4' style='white-space:nowrap; text-align:center;'>   </td>
+</tr><tr id='TBL-2-4-' style='vertical-align:baseline;'><td class='td11' id='TBL-2-4-1' style='white-space:nowrap; text-align:center;'> <div style='text-align:center;'> <img src='HL1.png' /> </div>   </td><td class='td11' id='TBL-2-4-2' style='white-space:nowrap; text-align:center;'>   </td><td class='td11' id='TBL-2-4-3' style='white-space:nowrap; text-align:center;'>   </td><td class='td11' id='TBL-2-4-4' style='white-space:nowrap; text-align:center;'> <div style='text-align:center;'> <img src='HH1.png' /> </div>   </td></tr></table></div><a id='x1-7001r8'></a>
+<a id='x1-7002'></a>
+<figcaption class='caption'><span class='id'>Figure 8: </span><span class='content'>2D-DWT basis functions (see this <a href='https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/DWT_basis.ipynb'>notebook</a>).
+</span></figcaption><!-- tex4ht:label?: x1-7001r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 326 --><p class='indent'>   Separability in the DWT context means that we can compute the 1-levels
+2D-DWT using the 1D filters, by applying them to each dimension, and using
+<a href='https://en.wikipedia.org/wiki/In-place_algorithm'>in-place</a> operations. This procedure has been described in the Algorithms <a href='#-rowsdwt-x-x'>1.2<!-- tex4ht:ref: alg:Rows-DWT  --></a>, <a href='#-columnsdwt-x-x'>1.2<!-- tex4ht:ref: alg:Columns-DWT  --></a>
+and <a href='#-ddwt-x-x'>1.2<!-- tex4ht:ref: alg:2D-DWT  --></a>, where \({\mathbf X}_{r,*}\) refers to the \(r\)-th row of the matrix \(\mathbf X\) and \({\mathbf X}_{*,c}\) to the \(c\)-th column, being \(R\)
+and \(C\) the number of rows and columns of the input image \(\mathbf X\). See also the
+Fig. <a href='#x1-10005r9'>9<!-- tex4ht:ref: fig:2D-DWT  --></a>.
+</p>
+<!-- l. 339 --><p class='noindent'><span class='paragraphHead' id='-rowsdwt-x-x'><a id='x1-80001.2'></a>\(\mathsf {Rows\_DWT}(\mathbf {X})\)<span class='ecbx-1000'>:</span> \(\rightarrow \mathbf {X}\)</span>
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-8002x1'>
+     <!-- l. 342 --><p class='noindent'>\(\mathsf {for}~r~\mathsf {in~range}(\mathbf {X}.\mathsf {shape}[0])\):
+         </p><ol class='enumerate2'>
+<li class='enumerate' id='x1-8004x1'>\({\mathbf X}[r,:]\leftarrow \mathsf {DWT}(\mathbf {X}[r,:])\)</li></ol>
+     </li></ol>
+<!-- l. 348 --><p class='noindent'><span class='paragraphHead' id='-columnsdwt-x-x'><a id='x1-90001.2'></a>\(\mathsf {Columns\_DWT}(\mathbf {X})\)<span class='ecbx-1000'>:</span> \(\rightarrow \mathbf {X}\)</span>
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-9002x1'>
+     <!-- l. 351 --><p class='noindent'>\(\mathsf {for}~c~\mathsf {in~range}(\mathbf {X}.\mathsf {shape}[0])\):
+         </p><ol class='enumerate2'>
+<li class='enumerate' id='x1-9004x1'>\({\mathbf X}[:,c]\leftarrow \mathsf {DWT}(\mathbf {X}[:,c])\)</li></ol>
+     </li></ol>
+<!-- l. 357 --><p class='noindent'><span class='paragraphHead' id='-ddwt-x-x'><a id='x1-100001.2'></a>\(\mathsf {2D\_DWT}(\mathbf {X})\)<span class='ecbx-1000'>:</span> \(\rightarrow \mathbf {X}\)</span>
+                                                                  
+
+                                                                  
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-10002x1'>\({\mathbf X}\leftarrow \mathsf {Rows\_DWT}(\mathbf {X})\)
+     </li>
+<li class='enumerate' id='x1-10004x2'>\({\mathbf X}\leftarrow \mathsf {Columns\_DWT}(\mathbf {X})\)</li></ol>
+   <figure class='figure' id='-decomposition-generated-by-ddwtx-'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<div class='tabular'> <table class='tabular' id='TBL-3'><colgroup id='TBL-3-1g'><col id='TBL-3-1' /><col id='TBL-3-2' /><col id='TBL-3-3' /><col id='TBL-3-4' /></colgroup><tr id='TBL-3-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-1-1' style='white-space:nowrap; text-align:center;'> <!-- l. 367 --><p class='noindent'><div style='text-align:center;'> <img src='graphics/rows_DWT.svg' /> </div>                                                                    </p></td><td class='td11' id='TBL-3-1-2' style='white-space:nowrap; text-align:center;'> <!-- l. 367 --><p class='noindent'><div style='text-align:center;'> <img src='graphics/2D-DWT.svg' /> </div>                                                                    </p></td><td class='td11' id='TBL-3-1-3' style='white-space:nowrap; text-align:center;'> <!-- l. 367 --><p class='noindent'><div style='text-align:center;'> <img src='graphics/n-levels-2D-DWT.svg' /> </div>                                                                    </p></td><td class='td11' id='TBL-3-1-4' style='white-space:nowrap; text-align:center;'> <!-- l. 367 --><p class='noindent'><div style='text-align:center;'> <img src='graphics/resolutions.svg' /> </div>                                                                    </p></td>
+</tr><tr id='TBL-3-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-2-1' style='white-space:nowrap; text-align:center;'>                                 (a)                                                    </td><td class='td11' id='TBL-3-2-2' style='white-space:nowrap; text-align:center;'>                                 (b)                                                    </td><td class='td11' id='TBL-3-2-3' style='white-space:nowrap; text-align:center;'>                                 (c)                                                    </td><td class='td11' id='TBL-3-2-4' style='white-space:nowrap; text-align:center;'>                                 (d)                                                    </td></tr></table>
+</div> <a id='x1-10005r9'></a>
+<a id='x1-10006'></a>
+<figcaption class='caption'><span class='id'>Figure 9: </span><span class='content'>Decomposition generated by \(\text {2D-DWT}^2(X)\).
+</span></figcaption><!-- tex4ht:label?: x1-10005r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 374 --><p class='indent'>   In the Subfig. (a), the rows of the image has been transformed using the 1-levels
+(1D) DWT (this is the output of the Alg. <a href='#-rowsdwt-x-x'>1.2<!-- tex4ht:ref: alg:Rows-DWT  --></a>). In the Subfig. (b), the columns of the
+previously rows-transformed image has been also transformed using the 1-levels DWT
+(this is the output of the Alg. <a href='#-columnsdwt-x-x'>1.2<!-- tex4ht:ref: alg:Columns-DWT  --></a>) applied to the previous data. Subfig. (b) is also
+the output of the Alg. <a href='#-ddwt-x-x'>1.2<!-- tex4ht:ref: alg:2D-DWT  --></a> applied to the initial image. In the Subfig. (c) the
+1-levels 2D-DWT has been also applied to the LL\(^1\) subband, generating a
+2-levels 2D decomposition. In the Subfig. (d) a simplified representation of
+Subfig. (c) has been used, where the different spatial resolution levels are
+highlighted.
+</p><!-- l. 387 --><p class='indent'>   As it can be seen in the Fig <a href='#x1-10005r9'>9<!-- tex4ht:ref: fig:2D-DWT  --></a>, the obtained 2D decomposition is expressed by
+\begin {equation}  \begin {bmatrix} \mathbf {ll} &amp; \mathbf {hl} \\ \mathbf {lh} &amp; \mathbf {hh} \end {bmatrix} = \text {2D-DWT}(X), \label {eq:2D-DWT}  \end {equation}
+where \(\mathbf l\) stands for low-pass filtering and \(\mathbf {h}\) for high-pass filtering. Notice that \({\mathbf ll}={\mathbf ll}^1\), \({\mathbf lh}={\mathbf lh}^1\), \({\mathbf hl}={\mathbf hl}^1\), and
+\({\mathbf hh}={\mathbf hh}^1\).
+</p><!-- l. 402 --><p class='indent'>   Eq. <span class='ecbx-1000'>??</span> describes the \(1\)-levels (analysis) 2D-DWT. Replacing \({\mathbf ll}={\mathbf l}^{s+1}\), \({\mathbf X}={\mathbf l}^s\), and \({\mathbf hl}, {\mathbf lh}, {\mathbf hh}\}={\mathbf h}^{s+1}\) in the
+previous expression, the \(S\)-levels 2D-DWT of \({\mathbf l}^0={\mathbf X}\) (\(\text {2D-DWT}^S({\mathbf l}^0)\)) can be computed applying \(S\)-times
+\begin {equation}  \{{\mathbf l}^{s+1}, {\mathbf h}^{s+1}\} = \text {2D-DWT}({\mathbf l}^s)  \end {equation}
+to the low-frequency subband \({\mathbf l}^s\). As an example, the Fig. <a href='#x1-10007r10'>10<!-- tex4ht:ref: fig:lena_2D-DWT  --></a> shows the \(3\)-levels
+2D-DWT of the image lena.
+</p>
+   <figure class='figure' id='-subfiga-the-lena-image-subfigb-ddwt-lenas-decomposition-subfigc-ddwt-lenas-normalized-decomposition-see-this-httpsgithubcomsistemasmultimediasistemasmultimediagithubioblobmastermilestonesdwtdwtlenaipynbnotebook-'> 
+
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<div class='tabular'> <table class='tabular' id='TBL-4'><colgroup id='TBL-4-1g'><col id='TBL-4-1' /><col id='TBL-4-2' /><col id='TBL-4-3' /></colgroup><tr id='TBL-4-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-4-1-1' style='white-space:nowrap; text-align:center;'> <!-- l. 419 --><p class='noindent'><div style='text-align:center;'> <img src='graphics/lena.png' /> </div>                                                                    </p></td><td class='td11' id='TBL-4-1-2' style='white-space:nowrap; text-align:center;'> <!-- l. 419 --><p class='noindent'><div style='text-align:center;'> <img src='graphics/dwt_lena.png' /> </div>                                                                    </p></td><td class='td11' id='TBL-4-1-3' style='white-space:nowrap; text-align:center;'> <!-- l. 419 --><p class='noindent'><div style='text-align:center;'> <img src='graphics/dwt_lena_normalized.png' /> </div>                                                                    </p></td>
+</tr><tr id='TBL-4-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-4-2-1' style='white-space:nowrap; text-align:center;'>                                 (a)                                                    </td><td class='td11' id='TBL-4-2-2' style='white-space:nowrap; text-align:center;'>                                 (b)                                                    </td><td class='td11' id='TBL-4-2-3' style='white-space:nowrap; text-align:center;'>                                 (c)                                                    </td></tr></table>
+</div> <a id='x1-10007r10'></a>
+<a id='x1-10008'></a>
+<figcaption class='caption'><span class='id'>Figure 10:   </span><span class='content'>Subfig. (a):   the   Lena   image.   Subfig. (b):   \(\text {2D-DWT}^3(\text {Lena})\)’s   decomposition.
+Subfig. (c): \(\text {2D-DWT}^3(\text {Lena})\)’s normalized decomposition. See this <a href='https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/DWT_lena.ipynb'>notebook</a>.
+</span></figcaption><!-- tex4ht:label?: x1-10007r1  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <h4 class='subsectionHead' id='multiresolution'><span class='titlemark'>1.3   </span> <a id='x1-110001.3'></a>Multiresolution</h4>
+<!-- l. 432 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='multiresolution1'><span class='titlemark'>1.3.1   </span> <a id='x1-120001.3.1'></a>Multiresolution</h5>
+<!-- l. 433 --><p class='noindent'>Similarly to the 1D case, a \(\text {2D-DWT}^S(\cdot )\) provides \(S+1\) spatial resolution levels. An example of this can
+be seen in the Subfig. <a href='#x1-10005r9'>9<!-- tex4ht:ref: fig:2D-DWT  --></a>-(d), where there are 3 possible resolutions. In the Subfig. <a href='#x1-10007r10'>10<!-- tex4ht:ref: fig:lena_2D-DWT  --></a>
+there are 4 resolutions.
+</p><!-- l. 439 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='multiresolution2'><span class='titlemark'>1.3.2   </span> <a id='x1-130001.3.2'></a>Multiresolution</h5>
+<!-- l. 440 --><p class='noindent'>The \(\text {MDWT}\) provides dyadic spatial multiresolution and full temporal multiresolution.
+</p><!-- l. 443 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='quantization'><span class='titlemark'>1.4   </span> <a id='x1-140001.4'></a>Quantization</h4>
+<!-- l. 444 --><p class='noindent'>To find the gains in the 2D case we can compute the energy of the signal
+generated by the inverse transform of the unitary impulse discrete 2D signal \begin {equation}  \delta _{i,j}(x,y) = \left \{ \begin {array}{ll} 1 &amp; \text {if $i=x$ and $j=y$}\\ 0 &amp; \text {otherwise}. \end {array} \right .  \end {equation}
+</p><!-- l. 457 --><p class='indent'>   Notice that (see the Fig. <a href='#x1-10007r10'>10<!-- tex4ht:ref: fig:lena_2D-DWT  --></a>) the low-frequency subbands concentrate
+more of the energy (and the visual information). Therefore, given a target
+bit-rate, these subbands are going to contribute more the the quality of the
+reconstruction.
+</p><!-- l. 461 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='quantization1'><span class='titlemark'>1.4.1   </span> <a id='x1-150001.4.1'></a>Quantization</h5>
+<!-- l. 462 --><p class='noindent'>In the case of biorthogonal transforms, and in absence of RD optimization, the quantization
+steps uses for each subband should be inversely proportional to the L\(_2\) synthesis gain of the
+subbands<span class='footnote-mark'><a href='#fn2x0' id='fn2x0-bk'><sup class='textsuperscript'>2</sup></a></span><a id='x1-15001f2'></a> <span class='cite'>[<a href='#Xmarcellin2002overview'>2</a>]</span>.
+However, notice that in orthogonal DWTs all the subbands have the same
+gain.
+                                                                  
+
+                                                                  
+</p><!-- l. 470 --><p class='noindent'>
+</p>
+   <h5 class='subsubsectionHead' id='quantization2'><span class='titlemark'>1.4.2   </span> <a id='x1-160001.4.2'></a>Quantization</h5>
+<!-- l. 471 --><p class='noindent'>As usually, we can use \begin {equation}  \Delta _0=\Delta _1=\dots =\Delta _{N-1},  \end {equation}
+where \(\Delta _i\) is the quantization step used for the \(i\)-th frame of the sequence. However,
+notice that this quantization pattern does not necessaryly optimizes the RD tradeoff.
+The RD curves of each frame should be taken into consideration in order to perform
+a good rate-control.
+</p><!-- l. 481 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='references'><span class='titlemark'>2   </span> <a id='x1-170002'></a>References</h3>
+   <div class='thebibliography'>
+   <p class='bibitem'><span class='biblabel'>
+ [1]<span class='bibsp'>   </span></span><a id='Xkovacevic2013fourier'></a>J. Kovačević,  V.K.  Goyal,  and  M. Vetterli.   <a href='https://foundationsofsignalprocessing.org/FWSP_a3.2_2013.pdf'><span class='ecti-1000'>Fourier and Wavelet
+   </span><span class='ecti-1000'>Signal Processing</span></a>. <a class='url' href='http://www.fourierandwavelets.org/'><span class='ectt-1000'>http://www.fourierandwavelets.org/</span></a>, 2013.
+   </p>
+   <p class='bibitem'><span class='biblabel'>
+ [2]<span class='bibsp'>   </span></span><a id='Xmarcellin2002overview'></a>M.W. Marcellin, M.A. Lepley, A. Bilgin, T.J. Flohr, T.T. Chinen, and
+   J.H. Kasner. <a href='https://www.sciencedirect.com/science/article/pii/S0923596501000273?casa_token=hmHFwHhdLm4AAAAA:qn_nSH1UaCLppBoOzPSmeADZNCclshdkNFwjATluVredX8cIebjQ_PITzqeNbOqPazUhcHJtGqw'>An overview of quantization in JPEG 2000</a>. <span class='ecti-1000'>Signal Processing:
+   </span><span class='ecti-1000'>Image Communication</span>, 17(1):73–84, 2002.
+   </p>
+   <p class='bibitem'><span class='biblabel'>
+ [3]<span class='bibsp'>   </span></span><a id='Xsayood2017introduction'></a>K. Sayood.    <a href='http://rahilshaikh.weebly.com/uploads/1/1/6/3/11635894/data_compression.pdf'><span class='ecti-1000'>Introduction  to  Data  Compression</span></a>  <a href='https://people.cs.nctu.edu.tw/~cmliu/Courses/Compression/'><span class='ecti-1000'>(Slides)</span></a>.    Morgan
+   Kaufmann, 2017.
+   </p>
+   <p class='bibitem'><span class='biblabel'>
+ [4]<span class='bibsp'>   </span></span><a id='Xvetterli2014foundations'></a>M. Vetterli, J. Kovačević, and V.K. Goyal.  <a href='http://www.fourierandwavelets.org/FSP_v1.1_2014.pdf'><span class='ecti-1000'>Foundations of Signal
+   </span><span class='ecti-1000'>Processing</span></a>. Cambridge University Press, 2014.
+</p>
+   </div>
+   <div class='footnotes'><!-- l. 151 --><p class='noindent'><span class='footnote-mark'><a href='#fn1x0-bk' id='fn1x0'><sup class='textsuperscript'>1</sup></a></span><span class='ecrm-0800'>Sharper transition bands.</span></p>
+<!-- l. 468 --><p class='indent'>     <span class='footnote-mark'><a href='#fn2x0-bk' id='fn2x0'><sup class='textsuperscript'>2</sup></a></span><span class='ecrm-0800'>If a subband has a high gain, this means that its contribution to the reconstruction of the
+</span><span class='ecrm-0800'>signal is going to be high, also. Therefore, it’s desirable to introduce a small quantization error in
+</span><span class='ecrm-0800'>this subband, reducing the quantization step.</span></p>                                                              </div>
+ 
+</body> 
+</html>
