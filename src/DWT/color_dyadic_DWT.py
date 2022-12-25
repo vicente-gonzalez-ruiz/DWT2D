@@ -519,3 +519,50 @@ SRLs.
             HH[:,:, component_I] = decompositions[component_I][resolution_I][2][:,:]
         color_decomposition.append((LH, HL, HH))
     return color_decomposition
+
+def extract_decomposition(color_decomposition, component_I):
+    '''Extract a component (in form of a decomposition) from a color
+decomposition.
+
+    Parameters
+    ----------
+    color_decomposition : Python-list
+        An input list of color SRLs.
+    component_index : int
+        The component to extract.
+
+    Returns
+    -------
+    A (monochromatic) decomposition: list
+
+    '''
+    decomposition = [color_decomposition[0][..., component_I]]
+    for color_resolution in color_decomposition[1:]:
+        resolution = [] 
+        for color_subband in color_resolution:
+            resolution.append(color_subband[..., component_I])
+        decomposition.append(tuple(resolution))
+    return decomposition
+
+def insert_decomposition(color_decomposition, decomposition, component_I):
+    '''Insert a decomposition (a list of tuples of 2D subbands (each one a
+(row, column)-np.ndarray) in a color decomposition (a list of tuples
+of 3D subbands (each one a (row, column, component)-np.ndarray).
+
+    Parameters
+    ----------
+    color_decomposition : Python-list
+        An output list of color SRLs.
+    decomposition : Python-list.
+        An input list of (monochromatic) SRLs.
+    component_I : int
+        The index of the inserted component.
+
+    Returns
+    -------
+    None.
+
+    '''
+    color_decomposition[0][..., component_I] = decomposition[0][:] # LL^n subband
+    for color_resolution, resolution in zip(color_decomposition, decomposition):
+        color_resolution[..., component_I] = resolution[component_I]
