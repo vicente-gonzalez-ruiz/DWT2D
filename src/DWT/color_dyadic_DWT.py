@@ -279,7 +279,7 @@ image, in glued format.
 
     '''
     logger.debug(f"color_decomposition={color_decomposition}")
-    logger.debug(f"prefix={prefix}")
+    logger.debug(f"fn={fn}")
     logger.debug(f"image_number={image_number}")
     glued_color_decomposition, slices = glue_color_decomposition(color_decomposition)
     #output_length = image_3.write(glued_color_decomposition, fn)
