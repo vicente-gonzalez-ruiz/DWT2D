@@ -1,7 +1,8 @@
+% Emacs, this is -*-latex-*-
+
 \title{Energy Concentration and Spatial Multiresolution with the Discrete Wavelet Transform}
 
 \maketitle
-
 \tableofcontents
 
 \section{The transform}
@@ -335,31 +336,30 @@ ${\mathbf X}$. See also the Fig.~\ref{fig:2D-DWT}.
 
 %\subsubsection[Algorithm]{Rows-DWT(${\mathbf X}$)}
 
-\begin{pseudocode}{\text{Rows-DWT}}{\mathbf X}
-  \label{alg:Rows-DWT}
-  \FOR r \GETS 0 \TO R-1 \DO
-  {\mathbf X}_{r,*} = \text{DWT}({\mathbf X}_{r,*})\\
-  \RETURN{\mathbf X}
-\end{pseudocode}
+\paragraph{$\mathsf{Rows\_DWT}(\mathbf{X})$: $\rightarrow\mathbf{X}$}
+\label{alg:Rows-DWT}
+\begin{enumerate}
+  \item $\mathsf{for}~r~\mathsf{in~range}(\mathbf{X}.\mathsf{shape}[0])$:
+  \begin{enumerate}
+     \item ${\mathbf X}[r,:]\leftarrow\mathsf{DWT}(\mathbf{X}[r,:])$
+  \end{enumerate}
+\end{enumerate}
 
-\begin{pseudocode}{\text{Columns-DWT}}{\mathbf X}
-  \label{alg:Columns-DWT}
-  \FOR c \GETS 0 \TO C-1 \DO
-  {\mathbf X}_{*,c} = \text{DWT}({\mathbf X}_{*,c})\\
-  \RETURN{\mathbf X}
-\end{pseudocode}
+\paragraph{$\mathsf{Columns\_DWT}(\mathbf{X})$: $\rightarrow\mathbf{X}$}
+\label{alg:Columns-DWT}
+\begin{enumerate}
+  \item $\mathsf{for}~c~\mathsf{in~range}(\mathbf{X}.\mathsf{shape}[0])$:
+  \begin{enumerate}
+     \item ${\mathbf X}[:,c]\leftarrow\mathsf{DWT}(\mathbf{X}[:,c])$
+  \end{enumerate}
+\end{enumerate}
 
-\begin{pseudocode}{\text{2D-DWT}}{\mathbf X}
-  \label{alg:2D-DWT}
-  {\mathbf X} = \text{Rows-DWT}({\mathbf X})\\
-  {\mathbf X} = \text{Columns-DWT}({\mathbf X})\\
-  \RETURN{X}
-  %\FOR r \GETS 0 \TO R-1 \DO
-  %X_{r,*} = \text{DWT}(X_{r,*})
-  %\\
-  %\FOR c \GETS 0 \TO C-1 \DO
-  %X_{*,c} = \text{DWT}(X_{*,c})
-\end{pseudocode}
+\paragraph{$\mathsf{2D\_DWT}(\mathbf{X})$: $\rightarrow\mathbf{X}$}
+\label{alg:2D-DWT}
+\begin{enumerate}
+   \item ${\mathbf X}\leftarrow\mathsf{Rows\_DWT}(\mathbf{X})$
+   \item ${\mathbf X}\leftarrow\mathsf{Columns\_DWT}(\mathbf{X})$
+\end{enumerate}
 
 \begin{figure}
   \centering
@@ -371,9 +371,8 @@ ${\mathbf X}$. See also the Fig.~\ref{fig:2D-DWT}.
   \label{fig:2D-DWT}
 \end{figure}
 
- In the
-    Subfig.~(a), the rows of the image has been transformed using the
-    1-levels (1D) DWT (this is the output of the
+In the Subfig.~(a), the rows of the image has been transformed using
+    the 1-levels (1D) DWT (this is the output of the
     Alg.~\ref{alg:Rows-DWT}). In the Subfig.~(b), the columns of the
     previously rows-transformed image has been also transformed using
     the 1-levels DWT (this is the output of the
@@ -417,7 +416,7 @@ lena.
 \begin{figure}
   \centering
   \begin{tabular}{ccc}
-    \vbox{\pngfig{lena}{5cm}{500}} & \vbox{\pngfig{dwt_lena}{5cm}{500}} & \vbox{\pngfig{dwt_lena_normalized}{5cm}{500}}\\
+    \vbox{\pngfig{graphics/lena}{5cm}{500}} & \vbox{\pngfig{graphics/dwt_lena}{5cm}{500}} & \vbox{\pngfig{graphics/dwt_lena_normalized}{5cm}{500}}\\
     (a) & (b) & (c)
   \end{tabular}
   \caption{Subfig.~(a): the Lena image. Subfig.~(b):
@@ -479,31 +478,8 @@ necessaryly optimizes the RD tradeoff. The RD curves of each frame
 should be taken into consideration in order to perform a good
 rate-control.
 
-\section{What do I have to do?}
-
-\begin{comment}
-Please, using
-\href{https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/DWT_filters_analysis.ipynb}{this
-  notebook}, determine the frequency and phase responses of the
-\href{http://wavelets.pybytes.com/wavelet/db20/}{Daubechies 20} and
-\href{http://wavelets.pybytes.com/wavelet/bior6.8/}{Biorthogonal-6.8}
-filters. Determine also their relative gains, using the energy of the
-signal resulting of applying the synthesis transform to the impulse
-signal. 
-\end{comment}
-
-Please, develop the TODO sections of this
-\href{https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/DWT_compression.ipynb}{notebook}.
-
-\section{Timming}
-
-Please, finish this milestone before the next class session.
-
-\section{Deliverables}
-
-None.
-
 \section{References}
 
 \renewcommand{\addcontentsline}[3]{}% Remove functionality of \addcontentsline
-\bibliography{signal-processing,maths,data-compression,JPEG2000}
+\bibliography{signal_processing,maths,data_compression,JPEG2000}
+
