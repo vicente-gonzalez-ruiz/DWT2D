@@ -307,7 +307,7 @@ def read_glued(slices, fn):
     logger.debug(f"slices={slices}")
     logger.debug(f"fn={fn}")
     #glued_color_decomposition = image_3.read(fn, image_number)
-    glued_color_decomposition = read(fn)
+    glued_color_decomposition = _read(fn)
     color_decomposition = unglue_color_decomposition(glued_color_decomposition, slices)
     return color_decomposition
 
