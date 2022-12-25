@@ -339,6 +339,7 @@ def write_unglued(color_decomposition, fn):
     N_levels = len(color_decomposition) - 1
     logger.info(f"N_levels={N_levels}")
     #output_length = image_3.write(LL, f"{fn}LL{N_levels}", image_number)
+    output_length = _write(LL, f"{fn}LL{N_levels}")
     resolution_I = N_levels
     aux_decom = [color_decomposition[0][..., 0]]
     for resolution in color_decomposition[1:]:
