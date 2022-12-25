@@ -4,6 +4,7 @@
 import numpy as np
 import pywt
 from skimage import io # pip install scikit-image
+import os
 
 import logging
 logger = logging.getLogger(__name__)
