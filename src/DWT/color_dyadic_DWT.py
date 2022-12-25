@@ -257,7 +257,7 @@ def copy(decomposition):
 
 def _write(x, fn):
     io.imsave(fn + ".png", x, check_contrast=False)
-    output_length = os.path.getsize(fn)
+    output_length = os.path.getsize(fn + ".png")
     return output_length
 
 def write_glued(color_decomposition, fn=str):
