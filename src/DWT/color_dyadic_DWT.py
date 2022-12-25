@@ -217,3 +217,182 @@ def synthesize(color_decomposition, wavelet=_wavelet, N_levels=_N_levels):
     #for c in range(N_comps):
     #    color_image[:,:,c] = _color_image[c][:,:]
     return color_image
+
+def add(decomposition, val=32768):
+    '''Add a scalar <val> to the <decomposition>.
+    '''
+    logger.debug(f"decomposition={decomposition}")
+    logger.debug(f"val={val}")
+    new_decomp = [decomposition[0] + val]
+    for resolution in decomposition[1:]:
+        new_resol = []
+        for subband in resolution:
+            new_resol.append(subband + val)
+        new_decomp.append(tuple(new_resol))
+    return new_decomp
+
+def set_type(decomposition, dtype=np.uint16):
+    '''Change the type of the <decomposition>.
+    '''
+    logger.debug(f"decomposition={decomposition}")
+    logger.debug(f"dtype={dtype}")
+    new_decomp = [decomposition[0].astype(dtype)]
+    for resolution in decomposition[1:]:
+        new_resol = []
+        for subband in resolution:
+            new_resol.append(subband.astype(dtype))
+        new_decomp.append(tuple(new_resol))
+    return new_decomp
+
+def copy(decomposition):
+    logger.debug(f"decomposition={decomposition}")
+    new_decomp = [decomposition[0].copy()]
+    for resolution in decomposition[1:]:
+        new_resol = []
+        for subband in resolution:
+            new_resol.append(subband.copy())
+    return new_decomp
+
+def write_glued(color_decomposition, prefix=str, image_number=0):
+    '''Write a color decomposition into disk file, as a single color
+image, in glued format.
+
+    Parameters
+    ----------
+    color_decomposition : A Python-list of color SRLs.
+        The color decomposition to write in disk.
+    prefix : A Python-string.
+        The prefix of the output file.
+    image_number : A signed integer.
+        The image number in a possible sequence of images (frames).
+
+    Returns
+    -------
+    output_length : int
+        The length (in bytes) of the output file.
+    slces : list
+        Structure of the decomposition of each component.
+
+    '''
+    logger.debug(f"color_decomposition={color_decomposition}")
+    logger.debug(f"prefix={prefix}")
+    logger.debug(f"image_number={image_number}")
+    glued_color_decomposition, slices = glue_color_decomposition(color_decomposition)
+    output_length = image_3.write(glued_color_decomposition, prefix, image_number)
+    return output_length, slices
+
+
+def read_glued(slices, prefix, image_number=0):
+    '''Read a color decomposition from a (single) disk file.
+
+    Parameters
+    ----------
+    slices : a Python-list
+        The structure of the decomposition of each component.
+    prefix : a Python-string
+        The prefix of the inputf¡ file.
+    image_number : A signed integer.
+        The image number in a possible sequence of images (frames).
+
+    Returns
+    -------
+    A color decomposition : a Python-list of color SRLs.
+        The color decomposition read from the disk.
+    '''
+    logger.debug(f"slices={slices}")
+    logger.debug(f"prefix={prefix}")
+    logger.debug(f"image_number={image_number}")
+    glued_color_decomposition = image_3.read(prefix, image_number)
+    color_decomposition = unglue_color_decomposition(glued_color_decomposition, slices)
+    return color_decomposition
+
+def write_unglued(color_decomposition, prefix, image_number=0):
+    '''Write a color decomposition in several disk files (one per color subband).
+
+    Parameters
+    ----------
+    color_decomposition : A Python-list of color SRLs.
+        The color decomposition to write in disk.
+    prefix : A Python-string.
+        The prefix of the output files.
+    image_number : A signed integer.
+        The image number in a possible sequence of images (frames).
+
+    Returns
+    -------
+    output_length : int
+        The total length (in bytes) of the output files.
+    slces : list
+        Structure of the decomposition of each component.
+
+    '''
+    logger.debug(f"color_decomposition={color_decomposition}")
+    logger.info(f"prefix={prefix}")
+    logger.info(f"image_number={image_number}")
+    N_comps = color_decomposition[0].shape[2]
+    #_color_image = [None]*N_comps
+    #n_resolutions = len(color_decomposition)
+    #n_resolutions = N_levels+1
+    LL = color_decomposition[0]
+    N_levels = len(color_decomposition) - 1
+    logger.info(f"N_levels={N_levels}")
+    output_length = image_3.write(LL, f"{prefix}LL{N_levels}", image_number)
+    resolution_I = N_levels
+    aux_decom = [color_decomposition[0][..., 0]]
+    for resolution in color_decomposition[1:]:
+        subband_names = ["LH", "HL", "HH"]
+        sb = 0
+        aux_resol = []
+        for sbn in subband_names:
+            output_length += image_3.write(resolution[sb], f"{prefix}{sbn}{resolution_I}", image_number)
+            aux_resol.append(resolution[sb][..., 0])
+            sb += 1
+        resolution_I -= 1
+        aux_decom.append(tuple(aux_resol))
+    slices = pywt.coeffs_to_array(aux_decom)[1]
+    return output_length, slices
+
+def read_unglued(slices, prefix, image_number=0):
+    '''Read a color decomposition from the disk (one file per color subband).
+
+    Parameters
+    ----------
+    slices : a Python-list
+        The structure of the decomposition of each component.
+    prefix : a Python-string.
+        The prefix of the input files.
+    image_number : a signed integer.
+        The image number in a possible sequence of images (frames).
+
+    Returns
+    -------
+    color_decomposition : a Python-list of color SRLs.
+        The color decomposition read from the disk.
+
+    '''
+    N_levels = len(slices) - 1
+    LL = image_3.read(f"{prefix}LL{N_levels}", image_number)
+    color_decomposition = [LL]
+    resolution_I = N_levels
+    for l in range(N_levels, 0, -1):
+        subband_names = ["LH", "HL", "HH"]
+        sb = 0
+        resolution = []
+        for sbn in subband_names:
+            resolution.append(image_3.read(f"{prefix}{sbn}{resolution_I}", image_number))
+            sb += 1
+        color_decomposition.append(tuple(resolution))
+        resolution_I -= 1
+    return color_decomposition
+
+def entropy(decomposition):
+    entro = information.entropy(decomposition[0].flatten().astype(np.int16))
+    accumulated_entropy = entro * decomposition[0].size
+    image_size = decomposition[0].size
+    for sr in y[1:]:
+        for sb in sr:
+            entro = information.entropy(sb.flatten().astype(np.int16))
+            accumulated_entropy += (entro * sb.size)
+            image_size += sb.size
+    avg_entropy = accumulated_entropy / image_size
+    return avg_entropy
