@@ -3,6 +3,7 @@
 
 import numpy as np
 import pywt
+from skimage import io # pip install scikit-image
 
 import logging
 logger = logging.getLogger(__name__)
@@ -253,7 +254,12 @@ def copy(decomposition):
             new_resol.append(subband.copy())
     return new_decomp
 
-def write_glued(color_decomposition, prefix=str, image_number=0):
+def _write(x, fn):
+    io.imsave(fn, x, check_contrast=False)
+    output_length = os.path.getsize(fn)
+    return output_length
+
+def write_glued(color_decomposition, fn=str):
     '''Write a color decomposition into disk file, as a single color
 image, in glued format.
 
@@ -261,10 +267,8 @@ image, in glued format.
     ----------
     color_decomposition : A Python-list of color SRLs.
         The color decomposition to write in disk.
-    prefix : A Python-string.
-        The prefix of the output file.
-    image_number : A signed integer.
-        The image number in a possible sequence of images (frames).
+    fn : A Python-string.
+        The filename of the output file.
 
     Returns
     -------
@@ -278,21 +282,22 @@ image, in glued format.
     logger.debug(f"prefix={prefix}")
     logger.debug(f"image_number={image_number}")
     glued_color_decomposition, slices = glue_color_decomposition(color_decomposition)
-    output_length = image_3.write(glued_color_decomposition, prefix, image_number)
+    #output_length = image_3.write(glued_color_decomposition, fn)
+    output_length = _write(glued_color_decomposition, fn)
     return output_length, slices
 
+def _read(fn):
+    return io.imread(fn)
 
-def read_glued(slices, prefix, image_number=0):
+def read_glued(slices, fn):
     '''Read a color decomposition from a (single) disk file.
 
     Parameters
     ----------
     slices : a Python-list
         The structure of the decomposition of each component.
-    prefix : a Python-string
-        The prefix of the inputf¡ file.
-    image_number : A signed integer.
-        The image number in a possible sequence of images (frames).
+    fn : a Python-string
+        The filename of the inputf¡ file.
 
     Returns
     -------
@@ -300,23 +305,22 @@ def read_glued(slices, prefix, image_number=0):
         The color decomposition read from the disk.
     '''
     logger.debug(f"slices={slices}")
-    logger.debug(f"prefix={prefix}")
+    logger.debug(f"fn={fn}")
     logger.debug(f"image_number={image_number}")
-    glued_color_decomposition = image_3.read(prefix, image_number)
+    #glued_color_decomposition = image_3.read(fn, image_number)
+    glued_color_decomposition = read(fn)
     color_decomposition = unglue_color_decomposition(glued_color_decomposition, slices)
     return color_decomposition
 
-def write_unglued(color_decomposition, prefix, image_number=0):
+def write_unglued(color_decomposition, fn, image_number=0):
     '''Write a color decomposition in several disk files (one per color subband).
 
     Parameters
     ----------
     color_decomposition : A Python-list of color SRLs.
         The color decomposition to write in disk.
-    prefix : A Python-string.
-        The prefix of the output files.
-    image_number : A signed integer.
-        The image number in a possible sequence of images (frames).
+    fn : A Python-string.
+        The filename of the output files.
 
     Returns
     -------
@@ -327,7 +331,7 @@ def write_unglued(color_decomposition, prefix, image_number=0):
 
     '''
     logger.debug(f"color_decomposition={color_decomposition}")
-    logger.info(f"prefix={prefix}")
+    logger.info(f"fn={fn}")
     logger.info(f"image_number={image_number}")
     N_comps = color_decomposition[0].shape[2]
     #_color_image = [None]*N_comps
@@ -336,7 +340,7 @@ def write_unglued(color_decomposition, prefix, image_number=0):
     LL = color_decomposition[0]
     N_levels = len(color_decomposition) - 1
     logger.info(f"N_levels={N_levels}")
-    output_length = image_3.write(LL, f"{prefix}LL{N_levels}", image_number)
+    #output_length = image_3.write(LL, f"{fn}LL{N_levels}", image_number)
     resolution_I = N_levels
     aux_decom = [color_decomposition[0][..., 0]]
     for resolution in color_decomposition[1:]:
@@ -344,7 +348,8 @@ def write_unglued(color_decomposition, prefix, image_number=0):
         sb = 0
         aux_resol = []
         for sbn in subband_names:
-            output_length += image_3.write(resolution[sb], f"{prefix}{sbn}{resolution_I}", image_number)
+            #output_length += image_3.write(resolution[sb], f"{fn}{sbn}{resolution_I}", image_number)
+            output_length += _write(resolution[sb], f"{fn}{sbn}{resolution_I}")
             aux_resol.append(resolution[sb][..., 0])
             sb += 1
         resolution_I -= 1
@@ -352,26 +357,21 @@ def write_unglued(color_decomposition, prefix, image_number=0):
     slices = pywt.coeffs_to_array(aux_decom)[1]
     return output_length, slices
 
-def read_unglued(slices, prefix, image_number=0):
+def read_unglued(slices, fn, image_number=0):
     '''Read a color decomposition from the disk (one file per color subband).
 
     Parameters
     ----------
     slices : a Python-list
         The structure of the decomposition of each component.
-    prefix : a Python-string.
-        The prefix of the input files.
+    fn : a Python-string.
+        The filename of the input files.
     image_number : a signed integer.
         The image number in a possible sequence of images (frames).
 
-    Returns
-    -------
-    color_decomposition : a Python-list of color SRLs.
-        The color decomposition read from the disk.
-
     '''
     N_levels = len(slices) - 1
-    LL = image_3.read(f"{prefix}LL{N_levels}", image_number)
+    LL = image_3.read(f"{fn}LL{N_levels}", image_number)
     color_decomposition = [LL]
     resolution_I = N_levels
     for l in range(N_levels, 0, -1):
@@ -379,7 +379,8 @@ def read_unglued(slices, prefix, image_number=0):
         sb = 0
         resolution = []
         for sbn in subband_names:
-            resolution.append(image_3.read(f"{prefix}{sbn}{resolution_I}", image_number))
+#            resolution.append(image_3.read(f"{fn}{sbn}{resolution_I}", image_number))
+            resolution.append(_read(f"{fn}{sbn}{resolution_I}"))
             sb += 1
         color_decomposition.append(tuple(resolution))
         resolution_I -= 1
