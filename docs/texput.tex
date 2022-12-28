@@ -4,7 +4,7 @@
 
 \maketitle
 \tableofcontents
-
+     
 \section{The transform}
 
 Technically, the
@@ -111,10 +111,11 @@ holds for all DWTs),
 \begin{figure}
   \centering
   \svgfig{graphics/db5_phase}{6cm}{600}
-  \caption{Phase response of the Daubechies-5 filters (see this
-    \href{https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/DWT_filters_analysis.ipynb}{notebook}). Notice
-    that we obtained phase responses are not completely linear (it is
-    not a straight line).}
+  \caption{Phase response of the Daubechies-5 filters (see the
+    notebook
+    \href{https://github.com/vicente-gonzalez-ruiz/DWT/blob/master/docs/graphics/DWT_filters_study.ipynb}{Study
+      of some wavelet filters}). Notice that we obtained phase
+    responses are not completely linear (it is not a straight line).}
   \label{fig:db5_phase}
 \end{figure}
 
@@ -167,7 +168,10 @@ can conclude that:
 % Polyphase implementation of the multilevel DWT
 \begin{figure}
   \centering
-  \svgfig{graphics/DWT_scaled}{4cm}{400}
+  \svgfig{graphics/DWT}{4cm}{400}
+  %\includegraphics[width=0.8\textwidth]{graphics/DWT}
+  %\includegraphics[width=4cm]{graphics/DWT}
+  %\includegraphics{graphics/DWT}
   \caption{Computation of the $S$-levels DWT and the generated
     subbands.}
   \label{fig:DWT}
@@ -237,10 +241,11 @@ resolution levels of the analyzed signal ${\mathbf l}^0$:
 
 \begin{figure}
   \centering
-  \svgfig{graphics/PRFB}{5cm}{500}
+  \svgfig{graphics/PRFB}{4cm}{400}
   \caption{A 2-channels PRFB (Perfect Reconstruction Filter Bank). See
-    this
-    \href{https://github.com/Sistemas-Multimedia/Sistemas-Multimedia.github.io/blob/master/milestones/08-DWT/PRFB.ipynb}{notebook}.}
+    the notebook
+    \href{https://github.com/vicente-gonzalez-ruiz/DWT/blob/master/docs/PRFB.ipynb}{A
+      Perfect Reconstruction Filter Bank (PRFB)}.}
   \label{fig:PRFB}
 \end{figure}
 
@@ -314,7 +319,7 @@ simplicity. The Figure~\ref{fig:2D-DWT_basis} show an example of basis functions
 \begin{figure}
   \centering
   \begin{tabular}{cccc}
-    \png{LL3}{200} & \png{LH3}{200} & \png{LH2}{200} & \png{HH1}{200} \\
+    \png{graphics/LL3}{200} & \png{LH3}{200} & \png{LH2}{200} & \png{HH1}{200} \\
     \png{HL3}{200} & \png{HH3}{200} &                &                \\
     \png{HL2}{200} &                & \png{HH2}{200} &                \\
     \png{HL1}{200} &                &                & \png{HH1}{200}
