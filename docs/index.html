@@ -22,7 +22,7 @@ Transform</title>
 Multiresolution with the Discrete Wavelet
 Transform</h2>
  <div class='author'><a href='https://cms.ual.es/UAL/personas/persona.htm?id=515256515553484875'><span class='ecrm-1200'>Vicente González Ruiz</span></a> <span class='ecrm-1200'>- </span><a href='https://cms.ual.es/UAL/universidad/departamentos/informatica/index.htm'><span class='ecrm-1200'>Depto Informática</span></a> <span class='ecrm-1200'>- </span><a href='https://www.ual.es'><span class='ecrm-1200'>UAL</span></a></div><br />
-<div class='date'><span class='ecrm-1200'>December 25, 2022</span></div>
+<div class='date'><span class='ecrm-1200'>December 27, 2022</span></div>
    </div>
    <h3 class='likesectionHead' id='contents'><a id='x1-1000'></a>Contents</h3>
    <div class='tableofcontents'>
@@ -170,11 +170,11 @@ that:
          Therefore, the concentration of the energy in one of the subbands is
          smaller.
          </li>
-<li class='enumerate' id='x1-4016x2'>At it can be seen also in Eq. <span class='ecbx-1000'>??</span>, the subbands are downsampled by
-         2 (action usually represented by \(\downarrow 2\)) and both subbands should have, at
-         most, a <a href='https://en.wikipedia.org/wiki/Bandwidth_(signal_processing)'>bandwidth</a> of \(\frac {1}{2}\) <a href='https://en.wikipedia.org/wiki/Radian'>radians</a>/<a href='https://en.wikipedia.org/wiki/Sampling_(signal_processing)'>sample</a> in order to avoid the aliasing
-         during the <a href='https://en.wikipedia.org/wiki/Downsampling_(signal_processing)'>subsampling</a>, thus increasing the <a href='https://en.wikipedia.org/wiki/Perception'>perceptible</a> <a href='https://en.wikipedia.org/wiki/Signal-to-noise_ratio'>quality</a> of the
-         low-pass subband \(\mathbf l\).</li></ol>
+<li class='enumerate' id='x1-4016x2'>As  it  can  be  seen  also  in  Eq. \eqref{eq:Haar_transform},  the
+         subbands are downsampled by 2 (action usually represented by \(\downarrow 2\)) and
+         both subbands should have, at most, a <a href='https://en.wikipedia.org/wiki/Bandwidth_(signal_processing)'>bandwidth</a> of \(\frac {1}{2}\) <a href='https://en.wikipedia.org/wiki/Radian'>radians</a>/<a href='https://en.wikipedia.org/wiki/Sampling_(signal_processing)'>sample</a>
+         in order to avoid the aliasing during the <a href='https://en.wikipedia.org/wiki/Downsampling_(signal_processing)'>subsampling</a>, thus increasing
+         the <a href='https://en.wikipedia.org/wiki/Perception'>perceptible</a> <a href='https://en.wikipedia.org/wiki/Signal-to-noise_ratio'>quality</a> of the low-pass subband \(\mathbf l\).</li></ol>
      <!-- l. 147 --><p class='noindent'>These problems can be only solved using filters that have <a href='https://en.wikipedia.org/wiki/Transfer_function'>transfer functions</a> that overlaps a
      smaller area<span class='footnote-mark'><a href='#fn1x0' id='fn1x0-bk'><sup class='textsuperscript'>1</sup></a></span><a id='x1-4017f1'></a>
      (see Figs. <a href='#x1-4003r2'>2<!-- tex4ht:ref: fig:db5_modulus  --></a> and <a href='#x1-4005r3'>3<!-- tex4ht:ref: fig:bior3.5_modulus  --></a>).
@@ -200,24 +200,26 @@ that:
 
                                                                   
    </figure>
-<!-- l. 176 --><p class='indent'>   Eq. <span class='ecbx-1000'>??</span> computes the 1-levels Haar DWT. A more general expresion for this
-equation (and this holds for all DWTs) is \begin {equation}  {\mathbf l}^{s+1} | {\mathbf h}^{s+1} = \text {DWT}({\mathbf l}^s), \label {eq:DWT}  \end {equation}
+<!-- l. 176 --><p class='indent'>   Eq. \eqref{eq:Haar_transform} computes the 1-levels Haar DWT. A
+more general expresion for this equation (and this holds for all DWTs) is
+\begin {equation}  {\mathbf l}^{s+1} | {\mathbf h}^{s+1} = \text {DWT}({\mathbf l}^s), \label {eq:DWT}  \end {equation}
 where \(\cdot |\cdot \) denotes the concatenation of subbands. As can be seen in the Fig. <a href='#x1-4020r6'>6<!-- tex4ht:ref: fig:DWT  --></a>, it’s
-possible to compute the \(S\)-levels DWT, using Eq. <span class='ecbx-1000'>??</span> iteratively over the low-frequency
-subband, generating the decomposition \begin {equation}  {\mathbf l}^S_0 | {\mathbf h}^S_0 | {\mathbf h}^{S-1}_0 {\mathbf h}^{S-1}_1 | {\mathbf h}^{S-2}_0 {\mathbf h}^{S-2}_1 {\mathbf h}^{S-2}_2 {\mathbf h}^{S-2}_3 | \cdots | {\mathbf h}^1_0 h^1_1 \cdots {\mathbf h}^1_{2^{n-1}-1}=\text {DWT}^S({\mathbf l}^0), \label {eq:S_levels_DWT}  \end {equation}
+possible to compute the \(S\)-levels DWT, using Eq. \eqref{eq:DWT} iteratively over the
+low-frequency subband, generating the decomposition \begin {equation}  {\mathbf l}^S_0 | {\mathbf h}^S_0 | {\mathbf h}^{S-1}_0 {\mathbf h}^{S-1}_1 | {\mathbf h}^{S-2}_0 {\mathbf h}^{S-2}_1 {\mathbf h}^{S-2}_2 {\mathbf h}^{S-2}_3 | \cdots | {\mathbf h}^1_0 h^1_1 \cdots {\mathbf h}^1_{2^{n-1}-1}=\text {DWT}^S({\mathbf l}^0), \label {eq:S_levels_DWT}  \end {equation}
 where \begin {equation}  n = \log _2(N)  \end {equation}
 where \(N\) is the number of samples.
-</p><!-- l. 199 --><p class='indent'>   In the case of the Haar filters, the synthesis (inverse) \(1\)-levels DWT (that we will
-denote by \(\text {DWT}^{-1}\)) is the result of solving the coefficients \({\mathbf l}^{s+1}_n\) and \({\mathbf h}^{s+1}_n\) in the Eq. <span class='ecbx-1000'>??</span>. In general, for
-longer DWT filters we are going to have more coefficients, but the same procedure
-can be used for finding the synthesis transform. Therefore, it can be written that
-\begin {equation}  {\mathbf l}^s = \text {DWT}^{-1}({\mathbf l}^{s+1} | {\mathbf h}^{s+1}),  \end {equation}
+</p><!-- l. 199 --><p class='indent'>   In the case of the Haar filters, the synthesis (inverse) \(1\)-levels DWT (that
+we will denote by \(\text {DWT}^{-1}\)) is the result of solving the coefficients \({\mathbf l}^{s+1}_n\) and \({\mathbf h}^{s+1}_n\) in the
+Eq. \eqref{eq:Haar_transform}. In general, for longer DWT filters we are going to
+have more coefficients, but the same procedure can be used for finding the synthesis
+transform. Therefore, it can be written that \begin {equation}  {\mathbf l}^s = \text {DWT}^{-1}({\mathbf l}^{s+1} | {\mathbf h}^{s+1}),  \end {equation}
 and \(\text {DWT}^{-S}\), the \(S\)-levels synthesis DWT, can be computed as it is also described in the
 Fig. <a href='#x1-4020r6'>6<!-- tex4ht:ref: fig:DWT  --></a>, by simply reversing the analysis steps.
 </p>
    <h5 class='subsubsectionHead' id='-httpsenwikipediaorgwikimultiresolutionanalysismultiresolution-analysis'><span class='titlemark'>1.1.2   </span> <a id='x1-50001.1.2'></a><a href='https://en.wikipedia.org/wiki/Multiresolution_analysis'>Multiresolution analysis</a></h5>
-<!-- l. 213 --><p class='noindent'>In the decomposition described in Eq. <span class='ecbx-1000'>??</span> there are \(S+1\) subbands, and therefore, it is
-possible to compute \(S+1\) resolution levels of the analyzed signal \({\mathbf l}^0\): </p>
+<!-- l. 213 --><p class='noindent'>In the decomposition described in Eq. \eqref{eq:S_levels_DWT} there are \(S+1\)
+subbands, and therefore, it is possible to compute \(S+1\) resolution levels of the analyzed
+signal \({\mathbf l}^0\): </p>
      <ul class='itemize1'>
      <li class='itemize'>\({\mathbf l}^S\): the resolution level \(S\) of \({\mathbf l}^0\) (no \(\text {DWT}^{-1}\) has been applied in the synthesis process),
      with have only one sample \({\mathbf l}^S_0\) that uses to be the <a href='https://en.wikipedia.org/wiki/Arithmetic_mean'>arithmetic mean</a> of \({\mathbf l}^0\).
@@ -386,9 +388,9 @@ highlighted.
 \begin {equation}  \begin {bmatrix} \mathbf {ll} &amp; \mathbf {hl} \\ \mathbf {lh} &amp; \mathbf {hh} \end {bmatrix} = \text {2D-DWT}(X), \label {eq:2D-DWT}  \end {equation}
 where \(\mathbf l\) stands for low-pass filtering and \(\mathbf {h}\) for high-pass filtering. Notice that \({\mathbf ll}={\mathbf ll}^1\), \({\mathbf lh}={\mathbf lh}^1\), \({\mathbf hl}={\mathbf hl}^1\), and
 \({\mathbf hh}={\mathbf hh}^1\).
-</p><!-- l. 402 --><p class='indent'>   Eq. <span class='ecbx-1000'>??</span> describes the \(1\)-levels (analysis) 2D-DWT. Replacing \({\mathbf ll}={\mathbf l}^{s+1}\), \({\mathbf X}={\mathbf l}^s\), and \({\mathbf hl}, {\mathbf lh}, {\mathbf hh}\}={\mathbf h}^{s+1}\) in the
-previous expression, the \(S\)-levels 2D-DWT of \({\mathbf l}^0={\mathbf X}\) (\(\text {2D-DWT}^S({\mathbf l}^0)\)) can be computed applying \(S\)-times
-\begin {equation}  \{{\mathbf l}^{s+1}, {\mathbf h}^{s+1}\} = \text {2D-DWT}({\mathbf l}^s)  \end {equation}
+</p><!-- l. 402 --><p class='indent'>   Eq. \eqref{eq:2D-DWT} describes the \(1\)-levels (analysis) 2D-DWT. Replacing \({\mathbf ll}={\mathbf l}^{s+1}\), \({\mathbf X}={\mathbf l}^s\),
+and \({\mathbf hl}, {\mathbf lh}, {\mathbf hh}\}={\mathbf h}^{s+1}\) in the previous expression, the \(S\)-levels 2D-DWT of \({\mathbf l}^0={\mathbf X}\) (\(\text {2D-DWT}^S({\mathbf l}^0)\)) can be computed applying
+\(S\)-times \begin {equation}  \{{\mathbf l}^{s+1}, {\mathbf h}^{s+1}\} = \text {2D-DWT}({\mathbf l}^s)  \end {equation}
 to the low-frequency subband \({\mathbf l}^s\). As an example, the Fig. <a href='#x1-10007r10'>10<!-- tex4ht:ref: fig:lena_2D-DWT  --></a> shows the \(3\)-levels
 2D-DWT of the image lena.
 </p>

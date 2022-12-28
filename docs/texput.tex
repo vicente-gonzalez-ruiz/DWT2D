@@ -132,10 +132,10 @@ can conclude that:
     \href{https://en.wikipedia.org/wiki/Information}{information} can
     be found in both subbands (${\mathbf l}$ and ${\mathbf
       h}$). Therefore, the concentration of the energy in one of the
-    subbands is smaller.  \item At it can be seen also in
-    Eq.~\ref{eq:Haar_transform}, the subbands are downsampled by 2
-    (action usually represented by $\downarrow 2$) and both subbands
-    should have, at most, a
+    subbands is smaller.
+  \item As it can be seen also in Eq.~\eqref{eq:Haar_transform}, the
+    subbands are downsampled by 2 (action usually represented by
+    $\downarrow 2$) and both subbands should have, at most, a
     \href{https://en.wikipedia.org/wiki/Bandwidth_(signal_processing)}{bandwidth}
     of $\frac{1}{2}$
     \href{https://en.wikipedia.org/wiki/Radian}{radians}/\href{https://en.wikipedia.org/wiki/Sampling_(signal_processing)}{sample}
@@ -167,13 +167,13 @@ can conclude that:
 % Polyphase implementation of the multilevel DWT
 \begin{figure}
   \centering
-  \svgfig{graphics/DWT}{10cm}{1000}
+  \svgfig{graphics/DWT}{8cm}{800}
   \caption{Computation of the $S$-levels DWT and the generated
     subbands.}
   \label{fig:DWT}
 \end{figure}
 
-Eq.~\ref{eq:Haar_transform} computes the 1-levels Haar DWT. A more
+Eq.~\eqref{eq:Haar_transform} computes the 1-levels Haar DWT. A more
 general expresion for this equation (and this holds for all DWTs) is
 \begin{equation}
   {\mathbf l}^{s+1} | {\mathbf h}^{s+1} = \text{DWT}({\mathbf l}^s),
@@ -181,7 +181,7 @@ general expresion for this equation (and this holds for all DWTs) is
 \end{equation}
 where $\cdot|\cdot$ denotes the concatenation of subbands. As can
 be seen in the Fig.~\ref{fig:DWT}, it's possible to compute the
-$S$-levels DWT, using Eq.~\ref{eq:DWT} iteratively over the
+$S$-levels DWT, using Eq.~\eqref{eq:DWT} iteratively over the
 low-frequency subband, generating the decomposition
 \begin{equation}
   {\mathbf l}^S_0 | {\mathbf h}^S_0 | {\mathbf h}^{S-1}_0 {\mathbf
@@ -199,7 +199,7 @@ where $N$ is the number of samples.
 In the case of the Haar filters, the synthesis (inverse) $1$-levels
 DWT (that we will denote by $\text{DWT}^{-1}$) is the result of
 solving the coefficients ${\mathbf l}^{s+1}_n$ and ${\mathbf h}^{s+1}_n$ in the
-Eq.~\ref{eq:Haar_transform}. In general, for longer DWT filters we are
+Eq.~\eqref{eq:Haar_transform}. In general, for longer DWT filters we are
 going to have more coefficients, but the same procedure can be used
 for finding the synthesis transform. Therefore, it can be written that
 \begin{equation}
@@ -210,7 +210,7 @@ as it is also described in the Fig.~\ref{fig:DWT}, by simply reversing
 the analysis steps.
 
 \subsubsection{\href{https://en.wikipedia.org/wiki/Multiresolution_analysis}{Multiresolution analysis}}
-In the decomposition described in Eq.~\ref{eq:S_levels_DWT} there are
+In the decomposition described in Eq.~\eqref{eq:S_levels_DWT} there are
 $S+1$ subbands, and therefore, it is possible to compute $S+1$
 resolution levels of the analyzed signal ${\mathbf l}^0$:
 \begin{itemize}
@@ -399,7 +399,7 @@ for high-pass filtering. Notice that ${\mathbf ll}={\mathbf ll}^1$,
 ${\mathbf lh}={\mathbf lh}^1$, ${\mathbf hl}={\mathbf hl}^1$, and
 ${\mathbf hh}={\mathbf hh}^1$.
 
-Eq.~\ref{eq:2D-DWT} describes the $1$-levels (analysis)
+Eq.~\eqref{eq:2D-DWT} describes the $1$-levels (analysis)
 2D-DWT. Replacing ${\mathbf ll}={\mathbf l}^{s+1}$,
 ${\mathbf X}={\mathbf l}^s$, and
 ${\mathbf hl}, {\mathbf lh}, {\mathbf hh}\}={\mathbf h}^{s+1}$ in the
