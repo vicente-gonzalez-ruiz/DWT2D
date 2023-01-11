@@ -4,12 +4,12 @@ requires = ["hatchling", "setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "DWT"
+name = "DWT2D"
 version = "0.0.1"
 authors = [
   { name="Vicente González Ruiz", email="vicente.gonzalez.ruiz@gmail.com" },
 ]
-description = "2D-DWT (Discrete Wavelet Transform)"
+description = "2 Dimensional DWT (Discrete Wavelet Transform)"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
@@ -23,5 +23,5 @@ dynamic = ["dependencies"]
 dependencies = {file = ["requirements.txt"]}
 
 [project.urls]
-"Homepage" = "https://github.com/vicente-gonzalez-ruiz/DWT"
-"Bug Tracker" = "https://github.com/vicente-gonzalez-ruiz/DWT/issues"
+"Homepage" = "https://github.com/vicente-gonzalez-ruiz/DWT2D"
+"Bug Tracker" = "https://github.com/vicente-gonzalez-ruiz/DWT2D/issues"
