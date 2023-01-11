@@ -1,2 +1,2 @@
-# [DWT](https://vicente-gonzalez-ruiz.github.io/DWT/docs/)
+# [2D-DWT](https://vicente-gonzalez-ruiz.github.io/DWT/docs/)
 An implementation of the (dyadic) Discrete Wavelet Transform for 2D data.
